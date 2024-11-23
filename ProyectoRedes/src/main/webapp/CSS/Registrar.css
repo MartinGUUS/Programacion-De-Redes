@@ -1,0 +1,116 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9fafb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Container Styles */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Espaciado adicional */
+    background-color: #0879ef;
+    width: 100%;
+    min-height: 100vh; /* Asegura que ocupe todo el alto de la pantalla */
+    box-sizing: border-box;
+}
+
+/* Register Card */
+.register-card {
+    background-color: white;
+    padding: 40px 20px; /* Ajuste de padding */
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    max-width: 500px; /* Ajuste de ancho máximo */
+    width: 100%; /* Ajuste responsivo */
+    box-sizing: border-box;
+}
+
+.register-card h2 {
+    margin-bottom: 20px;
+    color: #2D3748;
+    font-size: 34px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #4A5568;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #E2E8F0;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4C51BF;
+    box-shadow: 0 0 5px rgba(76, 81, 191, 0.5);
+}
+
+/* Botón de Registro */
+.register-button {
+    display: inline-block;
+    padding: 12px;
+    background-color: #0879ef;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+.register-button:hover {
+    background-color: #005bb5;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.register-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Login Link */
+.login-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #4A5568;
+}
+
+.login-link a {
+    color: #0879ef;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+    color: #005bb5;
+    text-decoration: underline;
+}

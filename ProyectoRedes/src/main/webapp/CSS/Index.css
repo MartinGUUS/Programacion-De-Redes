@@ -1,0 +1,111 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9fafb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container Styles */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #0879ef; /* Color de fondo principal */
+}
+
+/* Login Card */
+.login-card {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    width: 350px;
+    text-align: center;
+}
+
+.login-card h2 {
+    margin-bottom: 20px;
+    color: #2D3748; /* Color del título */
+    font-size: 24px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #4A5568;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #E2E8F0;
+    border-radius: 5px; /* Esquinas redondeadas */
+    font-size: 16px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4C51BF;
+    box-shadow: 0 0 5px rgba(76, 81, 191, 0.5); /* Brillo en el input */
+}
+
+/* Botón de Login */
+.login-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0879ef; /* Color principal */
+    color: white; /* Texto blanco */
+    text-decoration: none; /* Sin subrayado */
+    font-size: 16px;
+    font-weight: bold;
+    border: none; /* Sin bordes */
+    border-radius: 5px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para profundidad */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Animaciones suaves */
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+.login-button:hover {
+    background-color: #005bb5; /* Color más oscuro al hover */
+    transform: scale(1.05); /* Ligeramente más grande */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra más intensa al hover */
+}
+
+.login-button:active {
+    transform: scale(0.95); /* Efecto de presionado */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Reduce la sombra */
+}
+
+/* Register Link */
+.register-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #4A5568;
+}
+
+.register-link a {
+    color: #0879ef; /* Color consistente */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease; /* Animación suave en color */
+}
+
+.register-link a:hover {
+    color: #005bb5; /* Más oscuro al hover */
+    text-decoration: underline;
+}

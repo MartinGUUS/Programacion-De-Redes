@@ -1,0 +1,152 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9fafb;
+}
+
+.main {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Sidebar Styles */
+.lateral {
+    width: 250px;
+    height: 110vh;
+    background-color: #0879ef; /* Color principal */
+    color: white; /* Texto blanco */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para mayor profundidad */
+    transition: transform 0.3s ease; /* Transición suave para la animación */
+}
+
+.lateral h1 {
+    margin-bottom: 20px;
+    font-size: 32px;
+    color: #ffffff; /* Color del texto blanco */
+    text-align: center; /* Centrar el título */
+}
+
+
+
+.lateral a {
+    display: block;
+    color: #ffffff; /* Texto blanco */
+    text-decoration: none; /* Sin subrayado */
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px; /* Esquinas redondeadas */
+    font-weight: bold;
+    font-size: 18px;
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.lateral a:hover {
+    background-color: #005bb5; /* Color más oscuro en hover */
+    transform: scale(1.05); /* Ligeramente más grande al hover */
+    text-decoration: none; /* Sin subrayado */
+}
+
+.submenuPrincipal {
+    display: none;
+    margin-left: 20px;
+}
+
+/* Estilo específico para el primer elemento del submenú */
+.submenuPrincipal a:first-child {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff; /* Color blanco */
+    background-color: rgba(89, 201, 98); /* Fondo verde para destacar */
+
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submenuPrincipal a:first-child:hover {
+    background-color: rgb(46, 114, 52); /* Fondo más oscuro al hover */
+    transform: scale(1.05);
+}
+
+/* Estilo general para otros elementos del submenú */
+.submenuPrincipal a {
+    font-size: 16px;
+    margin: 3px 0;
+    color: #cce7ff; /* Color más claro para los enlaces del submenú */
+}
+
+.submenuPrincipal a:hover {
+    background-color: #005bb5;
+    color: white;
+}
+
+/* Elementos interactivos */
+.menu-item {
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 18px;
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.menu-item:hover {
+    background-color: #005bb5;
+    transform: scale(1.05); /* Ligeramente más grande al hover */
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 32px;
+    color: #2D3748;
+}
+
+.header .search {
+    background-color: white;
+    border: 1px solid #E2E8F0;
+    padding: 10px;
+    border-radius: 5px;
+    width: 300px;
+}
+
+/* Botón de Notificaciones */
+.btn-notificaciones {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0879ef; /* Color principal */
+    color: white; /* Texto blanco */
+    text-decoration: none; /* Sin subrayado */
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px; /* Esquinas redondeadas */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Animaciones suaves */
+}
+
+.btn-notificaciones:hover {
+    background-color: #005bb5; /* Color más oscuro en hover */
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el mouse */
+    text-decoration: none; /* Asegura que no haya subrayado */
+}
+
+.btn-notificaciones:active {
+    transform: scale(0.95); /* Efecto de presionado */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Reduce la sombra al presionar */
+}
