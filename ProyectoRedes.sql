@@ -15,7 +15,8 @@ CREATE TABLE alumnos (
     segundo_nombre VARCHAR(50),
     apellido_paterno VARCHAR(50) NOT NULL,
     apellido_materno VARCHAR(50) NOT NULL,
-    correo VARCHAR(100) NOT NULL
+    correo VARCHAR(100) NOT NULL,
+    contrasena VARCHAR(50) NOT NULL
 );
 
 -- Crear la tabla maestros
@@ -25,7 +26,8 @@ CREATE TABLE maestros (
     segundo_nombre VARCHAR(50),
     apellido_paterno VARCHAR(50) NOT NULL,
     apellido_materno VARCHAR(50) NOT NULL,
-    correo VARCHAR(100) NOT NULL
+    correo VARCHAR(100) NOT NULL,
+    contrasena VARCHAR(50) NOT NULL
 );
 
 -- Crear la tabla grupos

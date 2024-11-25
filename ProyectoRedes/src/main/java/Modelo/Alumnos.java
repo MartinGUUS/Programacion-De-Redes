@@ -10,18 +10,28 @@ public class Alumnos implements Serializable {
     private String apellido_paterno;
     private String apellido_materno;
     private String correo;
+    private String contrasena;
 
 
     public Alumnos() {
     }
 
-    public Alumnos(String matricula, String nombre, String segundo_nombre, String apellido_paterno, String apellido_materno, String correo) {
+    public Alumnos(String matricula, String nombre, String segundo_nombre, String apellido_paterno, String apellido_materno, String correo, String contrasena) {
         this.matricula = matricula;
         this.nombre = nombre;
         this.segundo_nombre = segundo_nombre;
         this.apellido_paterno = apellido_paterno;
         this.apellido_materno = apellido_materno;
         this.correo = correo;
+        this.contrasena = contrasena;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public String getMatricula() {

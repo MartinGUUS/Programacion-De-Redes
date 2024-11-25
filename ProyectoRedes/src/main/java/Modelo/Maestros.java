@@ -9,17 +9,27 @@ public class Maestros implements Serializable {
     private String apellido_paterno;
     private String apellido_materno;
     private String correo;
+    private String contrasena;
 
     public Maestros() {
     }
 
-    public Maestros(String n_control, String nombre, String segundo_nombre, String apellido_paterno, String apellido_materno, String correo) {
+    public Maestros(String n_control, String nombre, String segundo_nombre, String apellido_paterno, String apellido_materno, String correo, String contrasena) {
         this.n_control = n_control;
         this.nombre = nombre;
         this.segundo_nombre = segundo_nombre;
         this.apellido_paterno = apellido_paterno;
         this.apellido_materno = apellido_materno;
         this.correo = correo;
+        this.contrasena = contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public String getContrasena() {
+        return contrasena;
     }
 
     public String getN_control() {
