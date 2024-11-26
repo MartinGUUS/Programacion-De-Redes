@@ -12,7 +12,7 @@ public class MaestrosDAO {
     private static final String UPDATE_MAESTRO = "UPDATE maestros SET nombre = ?, segundo_nombre = ?, apellido_paterno = ?, apellido_materno = ?, correo = ?, contrasena = ? WHERE n_control = ?";
     private static final String DELETE_MAESTRO_BY_NCONTROL = "UPDATE maestros SET estado = FALSE WHERE n_control = ?";
     private static final String SELECT_MAESTRO_BY_NCONTROL = "SELECT * FROM maestros WHERE n_control = ?";
-    private static final String SELECT_ALL_MAESTROS = "SELECT * FROM maestros WHERE estado = TRUE";
+    private static final String SELECT_ALL_MAESTROS = "SELECT * FROM maestros ";
     private static final String SELECT_LOGIN = "SELECT * FROM maestros WHERE n_control = ? and contrasena = ?";
 
 

@@ -8,12 +8,12 @@ import java.util.List;
 
 public class AlumnosDAO {
 
-    private static final String INSERT_ALUMNO = "INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena, estado) VALUES (?, ?, ?, ?, ?, ?, ?, TRUE)";
+    private static final String INSERT_ALUMNO = "INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_ALUMNO = "UPDATE alumnos SET nombre = ?, segundo_nombre = ?, apellido_paterno = ?, apellido_materno = ?, correo = ?, contrasena = ? WHERE matricula = ?";
     private static final String DELETE_ALUMNO_BY_MATRICULA = "UPDATE alumnos SET estado = FALSE WHERE matricula = ?";
-    private static final String SELECT_ALUMNO_BY_MATRICULA = "SELECT * FROM alumnos WHERE matricula = ? AND estado = TRUE";
-    private static final String SELECT_ALL_ALUMNOS = "SELECT * FROM alumnos WHERE estado = TRUE";
-    private static final String SELECT_LOGIN = "SELECT * FROM alumnos WHERE matricula = ? AND contrasena = ? AND estado = TRUE";
+    private static final String SELECT_ALUMNO_BY_MATRICULA = "SELECT * FROM alumnos WHERE matricula = ?";
+    private static final String SELECT_ALL_ALUMNOS = "SELECT * FROM alumnos ";
+    private static final String SELECT_LOGIN = "SELECT * FROM alumnos WHERE matricula = ? AND contrasena = ?";
 
     public List<Alumnos> loginAlumnos(String matricula, String contrasena) {
         Connection connection = null;
