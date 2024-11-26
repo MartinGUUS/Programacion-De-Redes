@@ -43,4 +43,38 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
             return false;
         }
     }
+
+
+    @Override
+    public String obtenerNombreAlumno(String matricula) {
+        try (Connection connection = Conexion.getConexion()) {
+            String query = "SELECT nombre FROM alumnos WHERE matricula = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, matricula);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("nombre");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // Retorna null si no encuentra al alumno
+    }
+
+    @Override
+    public String obtenerNombreMaestro(String numeroControl) {
+        try (Connection connection = Conexion.getConexion()) {
+            String query = "SELECT nombre FROM maestros WHERE n_control = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, numeroControl);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("nombre");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // Retorna null si no encuentra al maestro
+    }
+
 }

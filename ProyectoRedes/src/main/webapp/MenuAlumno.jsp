@@ -1,4 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+    // Configurar las cabeceras de la respuesta para evitar caché
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setDateHeader("Expires", 0); // Proxies
+
+    if (request.getSession(false) == null || request.getSession().getAttribute("usuario") == null) {
+        response.sendRedirect("index.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -28,14 +39,14 @@
             </div>
         </div>
         <a href="#">Configuraciones</a>
-        <a href="index.jsp">Cerrar sesión</a>
+        <a href="CerrarSesionServlet">Cerrar sesión</a>
     </div>
 
     <!-- CONTENIDO MAIN -->
     <div class="main-content">
         <div class="header">
-            <h1>Bienvenido, Alumno</h1>
-            <a href="#" class="btn-notificaciones">Notificaciones</a>
+            <h1>Bienvenido alumno: <%= request.getSession().getAttribute("nombre") %>
+            </h1>
         </div>
         <div class="info-section">
             <h2>Materias Inscritas</h2>
@@ -46,7 +57,8 @@
             </ul>
 
             <h2>Información</h2>
-            <p>Desde este menú puedes acceder a los chats de tus materias, revisar materiales y estar al tanto de las notificaciones importantes.</p>
+            <p>Desde este menú puedes acceder a los chats de tus materias, revisar materiales y estar al tanto de las
+                notificaciones importantes.</p>
         </div>
     </div>
 </div>
