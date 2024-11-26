@@ -7,15 +7,29 @@ public class Grupos_Alumnos implements Serializable {
     private int fk_grupos;
     private String fk_alumnos;
     private String fk_maestros;
-
+    private String nombreMateria; // Nuevo atributo
 
     public Grupos_Alumnos() {
+    }
+
+    public Grupos_Alumnos(int fk_grupos, String nombreMateria) {
+        this.fk_grupos = fk_grupos;
+        this.fk_alumnos = fk_alumnos;
+        this.fk_maestros = fk_maestros;
+        this.nombreMateria = nombreMateria;
     }
 
     public Grupos_Alumnos(int fk_grupos, String fk_alumnos, String fk_maestros) {
         this.fk_grupos = fk_grupos;
         this.fk_alumnos = fk_alumnos;
         this.fk_maestros = fk_maestros;
+    }
+
+    public Grupos_Alumnos(int fk_grupos, String fk_alumnos, String fk_maestros, String nombreMateria) {
+        this.fk_grupos = fk_grupos;
+        this.fk_alumnos = fk_alumnos;
+        this.fk_maestros = fk_maestros;
+        this.nombreMateria = nombreMateria;
     }
 
     public int getFk_grupos() {
@@ -40,5 +54,13 @@ public class Grupos_Alumnos implements Serializable {
 
     public void setFk_maestros(String fk_maestros) {
         this.fk_maestros = fk_maestros;
+    }
+
+    public String getNombreMateria() {
+        return nombreMateria;
+    }
+
+    public void setNombreMateria(String nombreMateria) {
+        this.nombreMateria = nombreMateria;
     }
 }

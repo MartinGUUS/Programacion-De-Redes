@@ -1,3 +1,7 @@
+<%@ page import="Servicios.LoginService" %>
+<%@ page import="java.rmi.Naming" %>
+<%@ page import="java.util.List" %>
+<%@ page import="Modelo.Grupos_Alumnos" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
     // Configurar las cabeceras de la respuesta para evitar caché
@@ -5,9 +9,22 @@
     response.setHeader("Pragma", "no-cache"); // HTTP 1.0
     response.setDateHeader("Expires", 0); // Proxies
 
+    // Validar sesión activa
     if (request.getSession(false) == null || request.getSession().getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
         return;
+    }
+
+    // Obtener la matrícula del usuario desde la sesión
+    String matricula = (String) request.getSession().getAttribute("usuario");
+
+    // Llamar al servicio RMI para obtener las materias
+    List<Grupos_Alumnos> listaMaterias = null;
+    try {
+        LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
+        listaMaterias = loginService.obtenerGruposPorAlumno(matricula);
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 %>
 <!DOCTYPE html>
@@ -34,9 +51,23 @@
             <div class="menu-item" onclick="toggleSubmenu('formsSubmenu')">Chats de trabajo</div>
             <div id="formsSubmenu" class="submenuPrincipal">
                 <a href="#">-- Unirse a un chat --</a>
-                <a href="ChatAlumno.jsp?materia=Materia1">Materia 1</a>
-                <a href="ChatAlumno.jsp?materia=Materia2">Materia 2</a>
+                <%
+                    if (listaMaterias != null && !listaMaterias.isEmpty()) {
+                        for (Grupos_Alumnos grupo : listaMaterias) {
+                %>
+                <a href="ChatAlumno.jsp?materia=<%= grupo.getNombreMateria() %>">
+                    <%= grupo.getNombreMateria() %>
+                </a>
+                <%
+                    }
+                } else {
+                %>
+                <p>No tienes materias inscritas.</p>
+                <%
+                    }
+                %>
             </div>
+
         </div>
         <a href="#">Configuraciones</a>
         <a href="CerrarSesionServlet">Cerrar sesión</a>
@@ -51,9 +82,20 @@
         <div class="info-section">
             <h2>Materias Inscritas</h2>
             <ul>
-                <li>Materia 1</li>
-                <li>Materia 2</li>
-                <li>Materia 3</li>
+                <%
+                    if (listaMaterias != null && !listaMaterias.isEmpty()) {
+                        for (Grupos_Alumnos grupo : listaMaterias) {
+                %>
+                <li><%= grupo.getNombreMateria() %>
+                </li>
+                <%
+                    }
+                } else {
+                %>
+                <li>No tienes materias inscritas.</li>
+                <%
+                    }
+                %>
             </ul>
 
             <h2>Información</h2>

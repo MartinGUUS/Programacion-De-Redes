@@ -32,62 +32,8 @@ public class Grupos_AlumnosDAO {
     }
 
 
-    public List<Grupos_Alumnos> obtenerPorMaestro(String fk_maestros) {
-        Connection connection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        List<Grupos_Alumnos> lista = new ArrayList<>();
-        try {
-            connection = Conexion.getConexion();
-            ps = connection.prepareStatement(SELECT_BY_MAESTRO);
-            ps.setString(1, fk_maestros);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Grupos_Alumnos grupoAlumno = new Grupos_Alumnos(
-                        rs.getInt("fk_grupos"),
-                        rs.getString("fk_alumnos"),
-                        rs.getString("fk_maestros")
-                );
-                lista.add(grupoAlumno);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al obtener grupos por maestro: " + e.getMessage());
-        } finally {
-            Conexion.cerrarResultSet(rs);
-            Conexion.cerrarStatement(ps);
-            Conexion.cerrarConexion(connection);
-        }
-
-        return lista;
-    }
 
 
-    public List<Grupos_Alumnos> obtenerPorAlumno(String fk_alumnos) {
-        Connection connection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        List<Grupos_Alumnos> lista = new ArrayList<>();
-        try {
-            connection = Conexion.getConexion();
-            ps = connection.prepareStatement(SELECT_BY_ALUMNO);
-            ps.setString(1, fk_alumnos);
-            rs = ps.executeQuery();
 
-            while (rs.next()) {
-                Grupos_Alumnos grupoAlumno = new Grupos_Alumnos(
-                        rs.getInt("fk_grupos"),
-                        rs.getString("fk_alumnos"),
-                        rs.getString("fk_maestros")
-                );
-                lista.add(grupoAlumno);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al obtener grupos por alumno: " + e.getMessage());
-        } finally {
-            Conexion.cerrarResultSet(rs);
-            Conexion.cerrarStatement(ps);
-            Conexion.cerrarConexion(connection);
-        }
-        return lista;
-    }
+
 }

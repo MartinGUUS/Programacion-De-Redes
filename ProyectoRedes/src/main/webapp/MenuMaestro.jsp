@@ -1,3 +1,7 @@
+<%@ page import="Modelo.Grupos_Alumnos" %>
+<%@ page import="Servicios.LoginService" %>
+<%@ page import="java.rmi.Naming" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%
@@ -9,6 +13,18 @@
     if (request.getSession(false) == null || request.getSession().getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
         return;
+    }
+
+    // Obtener la matrícula del usuario desde la sesión
+    String n_control = (String) request.getSession().getAttribute("usuario");
+
+    // Llamar al servicio RMI para obtener las materias
+    List<Grupos_Alumnos> listaMaterias = null;
+    try {
+        LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
+        listaMaterias = loginService.obtenerGruposPorMaestro(n_control);
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 %>
 <!DOCTYPE html>
@@ -35,9 +51,22 @@
         <div>
             <div class="menu-item" onclick="toggleSubmenu('formsSubmenu')">Gestión de Grupos</div>
             <div id="formsSubmenu" class="submenuPrincipal">
-                <a href="#">-- Crear Grupo --</a>
-                <a href="ChatMaestro.jsp?materia=Materia1">Materia 1</a>
-                <a href="ChatMaestro.jsp?materia=Materia2">Materia 2</a>
+                <a href="#">-- Unirse a un chat --</a>
+                <%
+                    if (listaMaterias != null && !listaMaterias.isEmpty()) {
+                        for (Grupos_Alumnos grupo : listaMaterias) {
+                %>
+                <a href="ChatMaestro.jsp?materia=<%= grupo.getNombreMateria() %>">
+                    <%= grupo.getNombreMateria() %>
+                </a>
+                <%
+                    }
+                } else {
+                %>
+                <p>No tienes materias inscritas.</p>
+                <%
+                    }
+                %>
             </div>
         </div>
         <a href="#">Configuraciones</a>
@@ -54,9 +83,20 @@
             <h2>Gestión de Grupos</h2>
             <p>Aquí puedes crear grupos para tus materias, gestionar alumnos y revisar la actividad en los chats.</p>
             <ul>
-                <li>Materia 1</li>
-                <li>Materia 2</li>
-                <li>Materia 3</li>
+                <%
+                    if (listaMaterias != null && !listaMaterias.isEmpty()) {
+                        for (Grupos_Alumnos grupo : listaMaterias) {
+                %>
+                <li><%= grupo.getNombreMateria() %>
+                </li>
+                <%
+                    }
+                } else {
+                %>
+                <li>No tienes materias inscritas.</li>
+                <%
+                    }
+                %>
             </ul>
 
             <h2>Información</h2>

@@ -1,5 +1,6 @@
 package Servicios.impl;
 
+import Modelo.Grupos_Alumnos;
 import Servicios.LoginService;
 import Datos.Conexion;
 
@@ -7,6 +8,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginServiceImpl extends UnicastRemoteObject implements LoginService {
 
@@ -76,5 +80,72 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
         }
         return null; // Retorna null si no encuentra al maestro
     }
+
+    @Override
+    public List<Grupos_Alumnos> obtenerGruposPorAlumno(String fk_alumnos) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Grupos_Alumnos> lista = new ArrayList<>();
+        try {
+            connection = Conexion.getConexion();
+            String SELECT_BY_ALUMNO = "SELECT g.id_grupos, g.nombre " +
+                    "FROM grupos_alumnos ga " +
+                    "JOIN grupos g ON ga.fk_grupos = g.id_grupos " +
+                    "WHERE ga.fk_alumnos = ?";
+            ps = connection.prepareStatement(SELECT_BY_ALUMNO);
+            ps.setString(1, fk_alumnos);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Grupos_Alumnos grupoAlumno = new Grupos_Alumnos(
+                        rs.getInt("id_grupos"),
+                        rs.getString("nombre") // Asignar nombreMateria
+                );
+                lista.add(grupoAlumno);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener grupos por alumno: " + e.getMessage());
+        } finally {
+            Conexion.cerrarResultSet(rs);
+            Conexion.cerrarStatement(ps);
+            Conexion.cerrarConexion(connection);
+        }
+        return lista;
+    }
+
+    @Override
+    public List<Grupos_Alumnos> obtenerGruposPorMaestro(String fk_maestros) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Grupos_Alumnos> lista = new ArrayList<>();
+        try {
+            connection = Conexion.getConexion();
+            String SELECT_BY_MAESTRO = "SELECT g.id_grupos, g.nombre\n" +
+                    "FROM grupos_alumnos ga\n" +
+                    "JOIN grupos g ON ga.fk_grupos = g.id_grupos\n" +
+                    "WHERE ga.fk_maestros = ?";
+            ps = connection.prepareStatement(SELECT_BY_MAESTRO);
+            ps.setString(1, fk_maestros);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Grupos_Alumnos grupoAlumno = new Grupos_Alumnos(
+                        rs.getInt("id_grupos"),
+                        rs.getString("nombre") // Asignar nombreMateria
+                );
+                lista.add(grupoAlumno);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener grupos por maestro: " + e.getMessage());
+        } finally {
+            Conexion.cerrarResultSet(rs);
+            Conexion.cerrarStatement(ps);
+            Conexion.cerrarConexion(connection);
+        }
+
+        return lista;
+    }
+
 
 }
