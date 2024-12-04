@@ -2,6 +2,7 @@
 <%@ page import="Servicios.LoginService" %>
 <%@ page import="java.rmi.Naming" %>
 <%@ page import="java.util.List" %>
+<%@ page import="Modelo.Grupos" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%
@@ -19,7 +20,7 @@
     String n_control = (String) request.getSession().getAttribute("usuario");
 
     // Llamar al servicio RMI para obtener las materias
-    List<Grupos_Alumnos> listaMaterias = null;
+    List<Grupos> listaMaterias = null;
     try {
         LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
         listaMaterias = loginService.obtenerGruposPorMaestro(n_control);
@@ -48,15 +49,15 @@
         <h1>Teams UV</h1>
         <a href="MenuMaestro.jsp">Inicio</a>
         <div>
-            <div class="menu-item" onclick="toggleSubmenu('formsSubmenu')">Gestión de Grupos</div>
+            <div class="menu-item" onclick="toggleSubmenu('formsSubmenu')">Chats de trabajo</div>
             <div id="formsSubmenu" class="submenuPrincipal">
-                <a href="#">-- Unirse a un chat --</a>
+                <a href="CrearChats.jsp?maestro=<%=n_control%>">-- Crear un chat --</a>
                 <%
                     if (listaMaterias != null && !listaMaterias.isEmpty()) {
-                        for (Grupos_Alumnos grupo : listaMaterias) {
+                        for (Grupos grupo : listaMaterias) {
                 %>
-                <a href="ChatMaestro.jsp?materia=<%= grupo.getNombreMateria() %>">
-                    <%= grupo.getNombreMateria() %>
+                <a href="ChatMaestro.jsp?id_grupos=<%= grupo.getId_grupos() %>&materia=<%= grupo.getNombre() %>">
+                    <%= grupo.getNombre() %>
                 </a>
                 <%
                     }
@@ -84,9 +85,9 @@
             <ul>
                 <%
                     if (listaMaterias != null && !listaMaterias.isEmpty()) {
-                        for (Grupos_Alumnos grupo : listaMaterias) {
+                        for (Grupos grupo : listaMaterias) {
                 %>
-                <li><%= grupo.getNombreMateria() %>
+                <li><%= grupo.getNombre() %>
                 </li>
                 <%
                     }

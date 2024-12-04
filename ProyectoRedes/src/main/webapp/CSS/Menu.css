@@ -30,7 +30,6 @@ body {
 }
 
 
-
 .lateral a {
     display: block;
     color: #ffffff; /* Texto blanco */
@@ -150,5 +149,6 @@ body {
     transform: scale(0.95); /* Efecto de presionado */
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Reduce la sombra al presionar */
 }
+
 
 

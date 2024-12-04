@@ -1,9 +1,10 @@
 <%@ page import="Modelo.Grupos_Alumnos" %>
-<%@ page import="java.util.List" %>
 <%@ page import="Servicios.LoginService" %>
 <%@ page import="java.rmi.Naming" %>
+<%@ page import="java.util.List" %>
 <%@ page import="Modelo.Grupos" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%
     // Configurar las cabeceras de la respuesta para evitar caché
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
@@ -14,7 +15,6 @@
         response.sendRedirect("index.jsp");
         return;
     }
-
 
     // Obtener la matrícula del usuario desde la sesión
     String n_control = (String) request.getSession().getAttribute("usuario");
@@ -28,62 +28,67 @@
         e.printStackTrace();
     }
 %>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat de Materias</title>
-    <link rel="stylesheet" href="CSS/Chat.css">
+    <title>Menú Maestro - Teams UV</title>
     <link rel="stylesheet" href="CSS/Menu.css">
-
     <style>
-        .agregarAlu {
-            display: inline-block;
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #0879ef;
+            text-align: center;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333333;
+        }
+
+        .form-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #E2E8F0;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .form-container button {
             background-color: #0879ef;
-            color: white;
+            color: #ffffff;
             font-size: 16px;
             font-weight: bold;
-            text-align: center;
-            text-decoration: none;
+            border: none;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%;
+            transition: background-color 0.3s ease;
         }
 
-        .agregarAlu:hover {
+        .form-container button:hover {
             background-color: #005bb5;
-            transform: scale(1.05);
-        }
-
-        .agregarAlu:active {
-            background-color: #003f8c;
-            transform: scale(0.95);
         }
     </style>
-
-    <script>
-        function toggleSubmenu(id) {
-            const submenu = document.getElementById(id);
-            submenu.style.display = submenu.style.display === "block" ? "none" : "block";
-        }
-    </script>
 </head>
 <body>
-<%
-    String materia = request.getParameter("materia");
-    String idgrupo = request.getParameter("id_grupos");
-    if (materia == null || materia.isEmpty()) {
-        materia = "Sin nombre";
-    }
-    if (idgrupo == null || idgrupo.isEmpty()) {
-        idgrupo = "Sin nombre";
-    }
-%>
 <div class="main">
+    <!-- BARRA LATERAL -->
     <div class="lateral">
         <h1>Teams UV</h1>
         <a href="MenuMaestro.jsp">Inicio</a>
@@ -98,7 +103,6 @@
                 <a href="ChatMaestro.jsp?id_grupos=<%= grupo.getId_grupos() %>&materia=<%= grupo.getNombre() %>">
                     <%= grupo.getNombre() %>
                 </a>
-
                 <%
                     }
                 } else {
@@ -112,23 +116,26 @@
         <a href="ConfiguracionMaestro.jsp">Perfil</a>
         <a href="CerrarSesionServlet">Cerrar sesión</a>
     </div>
+
+    <!-- CONTENIDO MAIN -->
     <div class="main-content">
         <div class="header">
-            <h1>Chat de <%= materia %>
-            </h1>
-            <a href="AgregarAlumnos.jsp?materia=<%= materia %>&id_grupos=<%=idgrupo%>" class="agregarAlu">Agregar alumnos</a>
-
+            <h1>Crear un nuevo grupo</h1>
         </div>
-        <div class="chat-container">
-            <div class="chat-messages">
-                <p><strong>Profesor:</strong> Bienvenido al chat de <%= materia %>.</p>
-                <p><strong>Profesor:</strong> Por favor, revisa los materiales publicados.</p>
+        <div class="info-section">
+            <div class="form-container">
+
+                <form action="CrearGrupoServlet" method="post">
+                    <label for="nombreGrupo">Nombre del Grupo:</label>
+                    <input type="text" id="nombreGrupo" name="nombreGrupo" placeholder="Ingrese el nombre del grupo"
+                           required>
+
+                    <label for="ncontrol">Numero de control maestro:</label>
+                    <input type="text" id="ncontrol" name="ncontrol" value="<%= n_control %>" readonly>
+
+                    <button type="submit">Crear Grupo</button>
+                </form>
             </div>
-            <form class="chat-input" method="post" enctype="multipart/form-data" action="EnviarMensajeServlet">
-                <textarea name="mensaje" placeholder="Escribe un mensaje..." rows="3"></textarea>
-                <input type="file" name="imagen" accept="image/*">
-                <button type="submit">Enviar</button>
-            </form>
         </div>
     </div>
 </div>

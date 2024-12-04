@@ -5,16 +5,27 @@ import java.io.Serializable;
 public class Grupos implements Serializable {
     private int id_grupos;
     private String nombre;
+    private String fk_maestros;
     private boolean estado;
 
     public Grupos() {
     }
 
 
-    public Grupos(int id_grupos, String nombre, boolean estado) {
+    public Grupos(int id_grupos, String nombre, boolean estado, String fk_maestros) {
         this.id_grupos = id_grupos;
         this.nombre = nombre;
         this.estado = estado;
+        this.fk_maestros = fk_maestros;
+    }
+
+
+    public String getFk_maestros() {
+        return fk_maestros;
+    }
+
+    public void setFk_maestros(String fk_maestros) {
+        this.fk_maestros = fk_maestros;
     }
 
     public int getId_grupos() {

@@ -1,12 +1,11 @@
 package Servicios.impl;
 
-import Datos.AlumnosDAO;
-import Datos.MaestrosDAO;
+import Datos.*;
 import Modelo.Alumnos;
+import Modelo.Grupos;
 import Modelo.Grupos_Alumnos;
 import Modelo.Maestros;
 import Servicios.LoginService;
-import Datos.Conexion;
 
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
@@ -119,26 +118,26 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
     }
 
     @Override
-    public List<Grupos_Alumnos> obtenerGruposPorMaestro(String fk_maestros) {
+    public List<Grupos> obtenerGruposPorMaestro(String fk_maestros) {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Grupos_Alumnos> lista = new ArrayList<>();
+        List<Grupos> lista = new ArrayList<>();
         try {
             connection = Conexion.getConexion();
-            String SELECT_BY_MAESTRO = "SELECT g.id_grupos, g.nombre\n" +
-                    "FROM grupos_alumnos ga\n" +
-                    "JOIN grupos g ON ga.fk_grupos = g.id_grupos\n" +
-                    "WHERE ga.fk_maestros = ?";
+            String SELECT_BY_MAESTRO = "SELECT * FROM grupos where fk_maestros=?";
             ps = connection.prepareStatement(SELECT_BY_MAESTRO);
             ps.setString(1, fk_maestros);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Grupos_Alumnos grupoAlumno = new Grupos_Alumnos(
+                Grupos maestrolist = new Grupos(
                         rs.getInt("id_grupos"),
-                        rs.getString("nombre") // Asignar nombreMateria
+                        rs.getString("nombre"),
+                        rs.getBoolean("estado"),
+                        rs.getString("fk_maestros")
+
                 );
-                lista.add(grupoAlumno);
+                lista.add(maestrolist);
             }
         } catch (SQLException e) {
             System.out.println("Error al obtener grupos por maestro: " + e.getMessage());
@@ -147,7 +146,6 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
             Conexion.cerrarStatement(ps);
             Conexion.cerrarConexion(connection);
         }
-
         return lista;
     }
 
@@ -162,6 +160,24 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
     public Maestros obtenerMaestroPorNControl(String nControl) {
         MaestrosDAO maestrosDAO = new MaestrosDAO();
         return maestrosDAO.obtenerMaestroPorNControl(nControl);
+    }
+
+    @Override
+    public void insertarGrupoAlumno(int idgrupo, String matricula, String ncontrol) {
+        Grupos_AlumnosDAO gruposDAO = new Grupos_AlumnosDAO();
+        gruposDAO.insertarGrupoAlumno(idgrupo, matricula, ncontrol);
+    }
+
+    @Override
+    public int obtenerGruposPorAlumno(String matricula, int idGrupo) {
+        Grupos_AlumnosDAO gruposDAO = new Grupos_AlumnosDAO();
+        return gruposDAO.obtenerGruposPorAlumno(matricula, idGrupo);
+    }
+
+    @Override
+    public void insertarGrupo(String nombre, String fkMaestro){
+        GruposDAO gruposDAO = new GruposDAO();
+        gruposDAO.insertarGrupo(nombre, fkMaestro);
     }
 
 

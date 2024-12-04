@@ -34,7 +34,9 @@ CREATE TABLE maestros (
 CREATE TABLE grupos (
     id_grupos INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    estado BOOLEAN NOT NULL DEFAULT TRUE
+    fk_maestros VARCHAR(20) NOT NULL,
+    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    FOREIGN KEY (fk_maestros) REFERENCES maestros (n_control) ON DELETE CASCADE
 );
 
 -- Crear la tabla grupos_alumnos (relación entre alumnos, maestros y grupos)
@@ -58,3 +60,11 @@ CREATE TABLE mensajes (
     FOREIGN KEY (fk_maestros) REFERENCES maestros (n_control) ON DELETE CASCADE,
     FOREIGN KEY (fk_grupos) REFERENCES grupos (id_grupos) ON DELETE CASCADE
 );
+
+
+INSERT INTO maestros (n_control, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
+VALUES ('123', 'Carlos', 'Eduardo', 'Gómez', 'López', 'carlos.gomez@example.com', '123');
+
+INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
+VALUES ('zs2202', 'María', 'Isabel', 'Pérez', 'Hernández', 'maria.perez@example.com', '123');
+
