@@ -40,14 +40,14 @@ public class GruposDAO {
     }
 
 
-    public void actualizarNombre(Grupos grupo) {
+    public void actualizarNombre(String nombre, int idgrupo) {
         Connection connection = null;
         PreparedStatement ps = null;
         try {
             connection = Conexion.getConexion();
             ps = connection.prepareStatement(UPDATE_GRUPO);
-            ps.setString(1, grupo.getNombre());
-            ps.setInt(2, grupo.getId_grupos());
+            ps.setString(1, nombre);
+            ps.setInt(2, idgrupo);
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error al actualizar grupo: " + e.getMessage());

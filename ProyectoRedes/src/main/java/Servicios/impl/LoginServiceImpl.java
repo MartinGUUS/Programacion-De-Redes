@@ -95,7 +95,7 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
             String SELECT_BY_ALUMNO = "SELECT g.id_grupos, g.nombre " +
                     "FROM grupos_alumnos ga " +
                     "JOIN grupos g ON ga.fk_grupos = g.id_grupos " +
-                    "WHERE ga.fk_alumnos = ?";
+                    "WHERE ga.fk_alumnos = ? AND g.estado = 1";
             ps = connection.prepareStatement(SELECT_BY_ALUMNO);
             ps.setString(1, fk_alumnos);
             rs = ps.executeQuery();
@@ -125,7 +125,7 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
         List<Grupos> lista = new ArrayList<>();
         try {
             connection = Conexion.getConexion();
-            String SELECT_BY_MAESTRO = "SELECT * FROM grupos where fk_maestros=?";
+            String SELECT_BY_MAESTRO = "SELECT * FROM grupos where fk_maestros=? AND estado = 1";
             ps = connection.prepareStatement(SELECT_BY_MAESTRO);
             ps.setString(1, fk_maestros);
             rs = ps.executeQuery();
@@ -175,10 +175,19 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
     }
 
     @Override
-    public void insertarGrupo(String nombre, String fkMaestro){
+    public void insertarGrupo(String nombre, String fkMaestro) {
         GruposDAO gruposDAO = new GruposDAO();
         gruposDAO.insertarGrupo(nombre, fkMaestro);
     }
 
+    public void desactivarGrupo(int id_grupos) {
+        GruposDAO gruposDAO = new GruposDAO();
+        gruposDAO.desactivarGrupo(id_grupos);
+    }
+
+    public void actualizarNombre(String nombre, int idgrupo) {
+        GruposDAO gruposDAO = new GruposDAO();
+        gruposDAO.actualizarNombre(nombre, idgrupo);
+    }
 
 }
