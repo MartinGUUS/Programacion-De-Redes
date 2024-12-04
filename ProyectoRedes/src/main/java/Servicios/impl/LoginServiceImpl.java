@@ -1,6 +1,10 @@
 package Servicios.impl;
 
+import Datos.AlumnosDAO;
+import Datos.MaestrosDAO;
+import Modelo.Alumnos;
 import Modelo.Grupos_Alumnos;
+import Modelo.Maestros;
 import Servicios.LoginService;
 import Datos.Conexion;
 
@@ -145,6 +149,19 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
         }
 
         return lista;
+    }
+
+
+    @Override
+    public Alumnos obtenerAlumnoPorMatricula(String matricula) {
+        AlumnosDAO alumnosDAO = new AlumnosDAO();
+        return alumnosDAO.obtenerAlumnoPorMatricula(matricula);
+    }
+
+    @Override
+    public Maestros obtenerMaestroPorNControl(String nControl) {
+        MaestrosDAO maestrosDAO = new MaestrosDAO();
+        return maestrosDAO.obtenerMaestroPorNControl(nControl);
     }
 
 

@@ -2,6 +2,7 @@
 <%@ page import="Servicios.LoginService" %>
 <%@ page import="java.rmi.Naming" %>
 <%@ page import="java.util.List" %>
+<%@ page import="Modelo.Maestros" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%
@@ -26,6 +27,25 @@
     } catch (Exception e) {
         e.printStackTrace();
     }
+
+    Maestros maestro = null;
+    String nombre = "";
+    String nom = "";
+    String apePaterno = "";
+    String apeMaterno = "";
+    String correo = "";
+    try {
+        LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
+        maestro = loginService.obtenerMaestroPorNControl(n_control);
+        nom = maestro.getNombre();
+        nombre = maestro.getNombre() + " " + maestro.getSegundo_nombre();
+        apePaterno = maestro.getApellido_paterno();
+        apeMaterno = maestro.getApellido_materno();
+        correo = maestro.getCorreo();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -75,31 +95,21 @@
     <!-- CONTENIDO MAIN -->
     <div class="main-content">
         <div class="header">
-            <h1>Bienvenido maestro: <%= request.getSession().getAttribute("nombre") %>
+            <h1>Perfil de <%= nom %>
 
         </div>
         <div class="info-section">
-            <h2>Gestión de Grupos</h2>
-            <p>Aquí puedes crear grupos para tus materias, gestionar alumnos y revisar la actividad en los chats.</p>
-            <ul>
-                <%
-                    if (listaMaterias != null && !listaMaterias.isEmpty()) {
-                        for (Grupos_Alumnos grupo : listaMaterias) {
-                %>
-                <li><%= grupo.getNombreMateria() %>
-                </li>
-                <%
-                    }
-                } else {
-                %>
-                <li>No tienes materias inscritas.</li>
-                <%
-                    }
-                %>
-            </ul>
+            <p><b>Matricula:</b> <%=n_control%>
+            </p>
+            <p><b>Nombre:</b> <%=nombre%>
+            </p>
+            <p><b>Apellido Paterno:</b> <%=apePaterno%>
+            </p>
+            <p><b>Apellido Materno:</b> <%=apeMaterno%>
+            </p>
+            <p><b>Correo electronico:</b> <%=correo%>
+            </p>
 
-            <h2>Información</h2>
-            <p>Este es tu espacio para mantenerte conectado con tus alumnos y gestionar materiales de estudio.</p>
         </div>
     </div>
 </div>

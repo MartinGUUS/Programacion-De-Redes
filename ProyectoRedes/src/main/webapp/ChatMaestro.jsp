@@ -75,7 +75,7 @@
                 %>
             </div>
         </div>
-        <a href="#">Configuraciones</a>
+        <a href="ConfiguracionMaestro.jsp">Perfil</a>
         <a href="CerrarSesionServlet">Cerrar sesión</a>
     </div>
     <div class="main-content">
