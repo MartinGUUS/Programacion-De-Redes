@@ -11,7 +11,8 @@ public class MensajesDAO {
     private static final String INSERT_MENSAJE = "INSERT INTO mensajes (fk_maestros, fk_grupos, texto, imagen, fecha_envio) VALUES (?, ?, ?, ?, ?)";
     private static final String SELECT_ALL_MENSAJES = "SELECT * FROM mensajes where fk_grupos = ?";
     private static final String SELECT_MENSAJES_POR_GRUPO =
-            "SELECT * FROM mensajes WHERE fk_grupos = ? ORDER BY fecha_envio ASC";
+            "SELECT * FROM mensajes WHERE fk_grupos = ? ORDER BY fecha_envio DESC";
+
 
     public List<Mensajes> obtenerMensajesPorGrupo(int idGrupo) {
         Connection connection = null;
