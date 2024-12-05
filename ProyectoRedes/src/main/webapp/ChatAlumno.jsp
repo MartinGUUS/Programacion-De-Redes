@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="Servicios.LoginService" %>
 <%@ page import="java.rmi.Naming" %>
+<%@ page import="Modelo.Maestros" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
     // Configurar las cabeceras de la respuesta para evitar caché
@@ -32,11 +33,16 @@
     // Llamar al servicio RMI para obtener los grupos del alumno (opcional, por si se requiere info adicional)
     List<Grupos_Alumnos> listaMaterias = null;
     List<Mensajes> mensajes = null;
+    Maestros maestro = null;
+
 
     try {
         LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
         listaMaterias = loginService.obtenerGruposPorAlumno(matricula);
+
         mensajes = loginService.obtenerMensajesPorGrupo(Integer.parseInt(idgrupo));
+
+
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -155,7 +161,8 @@
     </div>
     <div class="main-content">
         <div class="header">
-            <h1>Chat de <%= materia %></h1>
+            <h1>Chat de <%= materia %>
+            </h1>
         </div>
         <div class="chat-container">
             <div class="chat-messages">
@@ -166,8 +173,12 @@
                             if (texto == null || texto.trim().isEmpty()) {
                                 texto = "Imagen enviada";
                             }
+                            LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
+                            maestro = loginService.obtenerMaestroPorNControl(mensaje.getFk_maestros());
                 %>
-                <p><strong><%= mensaje.getFk_maestros() %>:</strong> <%= texto %></p>
+                <p><strong><%= maestro.getNombre() %>
+                    :</strong> <%= texto %>
+                </p>
                 <% if (mensaje.getImagen() != null) { %>
                 <img
                         class="chat-image"

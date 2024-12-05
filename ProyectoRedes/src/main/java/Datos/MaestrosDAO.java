@@ -82,6 +82,39 @@ public class MaestrosDAO {
         return listaMaestros;
     }
 
+    public Maestros nombreMaestroNcontrol(String nControl) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Maestros maestro = null;
+        try {
+            connection = Conexion.getConexion();
+            ps = connection.prepareStatement(SELECT_MAESTRO_BY_NCONTROL);
+            ps.setString(1, nControl);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                maestro = new Maestros(
+                        rs.getString("n_control"),
+                        rs.getString("nombre"),
+                        rs.getString("segundo_nombre"),
+                        rs.getString("apellido_paterno"),
+                        rs.getString("apellido_materno"),
+                        rs.getString("correo"),
+                        rs.getString("contrasena")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener maestro: " + e.getMessage());
+        } finally {
+            Conexion.cerrarResultSet(rs);
+            Conexion.cerrarStatement(ps);
+            Conexion.cerrarConexion(connection);
+        }
+        return maestro;
+    }
+
+
+
     public Maestros obtenerMaestroPorNControl(String nControl) {
         Connection connection = null;
         PreparedStatement ps = null;
