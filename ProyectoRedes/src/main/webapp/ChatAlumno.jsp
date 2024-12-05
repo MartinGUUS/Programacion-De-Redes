@@ -148,6 +148,40 @@
             const modal = document.getElementById('imageModal');
             modal.style.display = 'none';
         }
+
+        const createWebSocket = () => {
+            const socket = new WebSocket("ws://localhost:8080/ProyectoRedes/chatWebSocket");
+
+            socket.onopen = () => {
+                console.log("Conexión WebSocket abierta.");
+            };
+
+            socket.onmessage = (event) => {
+                const chatContainer = document.querySelector(".chat-messages");
+                const data = JSON.parse(event.data); // Supongamos que el mensaje se envía en JSON
+                const newMessage = document.createElement("div");
+                newMessage.innerHTML = `
+        <p><strong>${data.nombre}:</strong> ${data.texto}</p>
+        ${data.imagen ? `<img class="chat-image" src="${data.imagen}" onclick="showModal('${data.imagen}')">` : ""}
+    `;
+                chatContainer.appendChild(newMessage);
+            };
+
+            socket.onclose = () => {
+                console.log("Conexión WebSocket cerrada. Reintentando...");
+                setTimeout(createWebSocket, 3000); // Intenta reconectar después de 3 segundos
+            };
+
+            socket.onerror = (error) => {
+                console.error("Error en WebSocket:", error);
+            };
+
+            return socket;
+        };
+
+        const socket = createWebSocket();
+
+
     </script>
 </head>
 <body>

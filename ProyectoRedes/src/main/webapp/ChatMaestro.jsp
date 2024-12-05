@@ -124,6 +124,36 @@
             const modal = document.getElementById('imageModal');
             modal.style.display = 'none';
         }
+
+        const createWebSocket = () => {
+            const socket = new WebSocket("ws://localhost:8080/ProyectoRedes/chatWebSocket");
+
+            socket.onopen = () => {
+                console.log("Conexión WebSocket abierta.");
+            };
+
+            socket.onmessage = (event) => {
+                const chatContainer = document.querySelector(".chat-messages");
+                const newMessage = document.createElement("p");
+                newMessage.textContent = event.data;
+                chatContainer.appendChild(newMessage);
+            };
+
+            socket.onclose = () => {
+                console.log("Conexión WebSocket cerrada. Reintentando...");
+                setTimeout(createWebSocket, 3000); // Intenta reconectar después de 3 segundos
+            };
+
+            socket.onerror = (error) => {
+                console.error("Error en WebSocket:", error);
+            };
+
+            return socket;
+        };
+
+        const socket = createWebSocket();
+
+
     </script>
 </head>
 <body>
