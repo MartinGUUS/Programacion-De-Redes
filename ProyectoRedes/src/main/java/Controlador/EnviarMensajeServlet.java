@@ -2,7 +2,6 @@ package Controlador;
 
 import Modelo.Mensajes;
 import Servicios.LoginService;
-import WebSocket.ChatWebSocket;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -57,40 +56,18 @@ public class EnviarMensajeServlet extends HttpServlet {
             }
 
             try {
-                String notificacion = "";
                 // Asegúrate de que el servicio RMI esté corriendo y registrado correctamente
                 LoginService mensajeriaService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
-                if ((texto == null || texto.trim().isEmpty()) && imagen == null) {
-                    response.sendRedirect("ChatMaestro.jsp?id_grupos=" + fk_grupos + "&materia=" + materia + "&nombre=" + nombre);
-                    return;
-                }
-
-                if (texto == "" && imagen != null) {
+                if (texto == null && imagen != null) {
                     Mensajes mensaje = new Mensajes(0, fk_maestros, fk_grupos, "Se ha enviado una imagen", imagen, new Timestamp(System.currentTimeMillis()));
                     mensajeriaService.enviarMensaje(mensaje);
-                    notificacion = nombre + ": Se ha enviado una imagen";
-
-                } else if (texto != "" && imagen != null) {
-                    Mensajes mensaje = new Mensajes(0, fk_maestros, fk_grupos, texto, imagen, new Timestamp(System.currentTimeMillis()));
-                    mensajeriaService.enviarMensaje(mensaje);
-
-                    notificacion = nombre + ": " + texto + "\tCon imagen";
                 } else {
                     Mensajes mensaje = new Mensajes(0, fk_maestros, fk_grupos, texto, imagen, new Timestamp(System.currentTimeMillis()));
                     mensajeriaService.enviarMensaje(mensaje);
-                    notificacion = nombre + ": " + texto;
                 }
-
-
-                try {
-                    ChatWebSocket.notificarClientes(notificacion);
-                } catch (Exception e) {
-                    System.out.println("Error al notificar a los clientes: " + e.getMessage());
-                    e.printStackTrace();
-                }
-
                 response.sendRedirect("ChatMaestro.jsp?id_grupos=" + fk_grupos + "&materia=" + materia + "&nombre=" + nombre);
             } catch (Exception e) {
+                
                 e.printStackTrace();
             }
         }
