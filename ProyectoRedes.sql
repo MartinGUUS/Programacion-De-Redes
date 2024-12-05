@@ -64,7 +64,15 @@ CREATE TABLE mensajes (
 
 INSERT INTO maestros (n_control, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
 VALUES ('123', 'Carlos', 'Eduardo', 'Gómez', 'López', 'carlos.gomez@example.com', '123');
+INSERT INTO maestros (n_control, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
+VALUES ('asd', 'Miguel', 'Angel', 'Gómez', 'López', 'carlos.gomez@example.com', '123');
 
 INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
 VALUES ('zs2202', 'María', 'Isabel', 'Pérez', 'Hernández', 'maria.perez@example.com', '123');
+INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
+VALUES ('zs2203', 'Gustavo', 'Isabel', 'Pérez', 'Hernández', 'maria.perez@example.com', '123');
+INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
+VALUES ('zs2204', 'Martin', 'Isabel', 'Pérez', 'Hernández', 'maria.perez@example.com', '123');
+INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
+VALUES ('zs2205', 'Ricardo', 'Isabel', 'Pérez', 'Hernández', 'maria.perez@example.com', '123');
 
