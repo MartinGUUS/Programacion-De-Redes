@@ -55,6 +55,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú Maestro - Teams UV</title>
     <link rel="stylesheet" href="CSS/Menu.css">
+    <style>
+        .info-section {
+            background-color: #f7f9fc;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            font-size: 16px;
+        }
+
+        .info-section p {
+            margin: 10px 0;
+            color: #2d3748;
+        }
+
+        .info-section p b {
+            color: #0879ef;
+        }
+    </style>
     <script>
         function toggleSubmenu(id) {
             const submenu = document.getElementById(id);

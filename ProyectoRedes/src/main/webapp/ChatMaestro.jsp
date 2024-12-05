@@ -97,7 +97,7 @@
             </h1>
             <a href="AgregarAlumnos.jsp?materia=<%= materia %>&id_grupos=<%=idgrupo%>" class="agregarAlu">Agregar
                 alumnos</a>
-            <a href="VerMiembros.jsp?id_grupos=<%=idgrupo%>" class="agregarAlu">Ver alumnos
+            <a href="VerMiembros.jsp?materia=<%= materia %>&id_grupos=<%=idgrupo%>" class="agregarAlu">Ver alumnos
                 de <%=materia%>
             </a>
         </div>

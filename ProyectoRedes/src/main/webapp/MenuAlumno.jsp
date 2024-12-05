@@ -34,6 +34,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú Alumno - Teams UV</title>
     <link rel="stylesheet" href="CSS/Menu.css">
+
+    <style>
+
+        .info-section {
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .info-section h2 {
+            font-size: 20px;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .info-section p, .info-section ul {
+            font-size: 16px;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+
+        .info-section ul li {
+            margin-bottom: 10px;
+            list-style: disc;
+            margin-left: 20px;
+        }
+
+    </style>
     <script>
         function toggleSubmenu(id) {
             const submenu = document.getElementById(id);
@@ -50,7 +81,7 @@
         <div>
             <div class="menu-item" onclick="toggleSubmenu('formsSubmenu')">Chats de trabajo</div>
             <div id="formsSubmenu" class="submenuPrincipal">
-                <a href="#">-- Unirse a un chat --</a>
+                <!-- <a href="#">-- Unirse a un chat --</a> -->
                 <%
                     if (listaMaterias != null && !listaMaterias.isEmpty()) {
                         for (Grupos_Alumnos grupo : listaMaterias) {

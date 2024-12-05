@@ -195,4 +195,9 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
         return gruposDAO.obtenerTodosLosAlumnosPorGrupo(grupo);
     }
 
+    public boolean eliminarAlumnoDeGrupo(String matricula, int grupo) {
+        Grupos_AlumnosDAO gruposDAO = new Grupos_AlumnosDAO();
+        return gruposDAO.eliminarAlumnoDeGrupo(matricula, grupo);
+    }
+
 }

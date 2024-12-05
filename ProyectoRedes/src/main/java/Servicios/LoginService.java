@@ -37,4 +37,7 @@ public interface LoginService extends Remote {
     void actualizarNombre(String nombre, int idgrupo) throws RemoteException;
 
     List<Alumnos> obtenerTodosLosAlumnosPorGrupo(int grupo) throws RemoteException;
+
+    boolean eliminarAlumnoDeGrupo(String matricula, int grupo) throws RemoteException;
+
 }

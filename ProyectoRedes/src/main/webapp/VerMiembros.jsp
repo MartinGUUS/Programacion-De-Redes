@@ -41,6 +41,11 @@
         e.printStackTrace();
     }
 
+    String materia = request.getParameter("materia");
+    if (materia == null || materia.isEmpty()) {
+        materia = "Sin nombre";
+    }
+
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -78,6 +83,22 @@
         .tabla-alumnos tr:nth-child(even) {
             background-color: #f7f9fc;
         }
+
+        .btn-eliminar {
+            background-color: #ff4d4d;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-eliminar:hover {
+            background-color: #cc0000;
+        }
     </style>
 </head>
 <body>
@@ -86,7 +107,6 @@
     <div class="lateral">
         <h1>Teams UV</h1>
         <a href="MenuMaestro.jsp">Inicio</a>
-
         <a href="ConfiguracionMaestro.jsp">Perfil</a>
         <a href="CerrarSesionServlet">Cerrar sesión</a>
     </div>
@@ -104,23 +124,30 @@
                     <th>Matrícula</th>
                     <th>Nombre</th>
                     <th>Correo</th>
+                    <th>Eliminar del grupo</th>
                 </tr>
                 </thead>
                 <tbody>
                 <% if (listaAlumnos != null && !listaAlumnos.isEmpty()) {
                     for (Alumnos alumno : listaAlumnos) { %>
                 <tr>
-                    <td><%= alumno.getMatricula() %>
-                    </td>
-                    <td><%= alumno.getNombre() + " " + alumno.getSegundo_nombre() + " " + alumno.getApellido_paterno() + " " + alumno.getApellido_materno() %>
-                    </td>
-                    <td><%= alumno.getCorreo() %>
+                    <td><%= alumno.getMatricula() %></td>
+                    <td><%= alumno.getNombre() + " " + alumno.getSegundo_nombre() + " " + alumno.getApellido_paterno() + " " + alumno.getApellido_materno() %></td>
+                    <td><%= alumno.getCorreo() %></td>
+                    <td>
+                        <!-- Botón para eliminar -->
+                        <form action="EliminarAlumnoGrupoServlet" method="post">
+                            <input type="hidden" name="matricula" value="<%= alumno.getMatricula() %>">
+                            <input type="hidden" name="id_grupos" value="<%= id_grupo %>">
+                            <input type="hidden" name="materia" value="<%= materia %>">
+                            <button type="submit" class="btn-eliminar">Eliminar</button>
+                        </form>
                     </td>
                 </tr>
                 <% }
                 } else { %>
                 <tr>
-                    <td colspan="3">No se encontraron alumnos en este grupo.</td>
+                    <td colspan="4">No se encontraron alumnos en este grupo.</td>
                 </tr>
                 <% } %>
                 </tbody>

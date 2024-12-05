@@ -18,6 +18,32 @@ public class Grupos_AlumnosDAO {
                     "JOIN alumnos a ON ga.fk_alumnos = a.matricula " +
                     "WHERE ga.fk_grupos = ?";
 
+    private static final String DELETE_ALUMNO_DEL_GRUPO =
+            "DELETE FROM grupos_alumnos WHERE fk_alumnos = ? AND fk_grupos = ?";
+
+    public boolean eliminarAlumnoDeGrupo(String matricula, int grupo) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        boolean eliminado = false;
+
+        try {
+            connection = Conexion.getConexion();
+            ps = connection.prepareStatement(DELETE_ALUMNO_DEL_GRUPO);
+            ps.setString(1, matricula);
+            ps.setInt(2, grupo);
+            ps.executeUpdate();
+            eliminado = true;
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar el alumno del grupo: " + e.getMessage());
+        } finally {
+            Conexion.cerrarStatement(ps);
+            Conexion.cerrarConexion(connection);
+        }
+
+        return eliminado;
+    }
+
+
     public List<Alumnos> obtenerTodosLosAlumnosPorGrupo(int grupo) {
         Connection connection = null;
         PreparedStatement ps = null;

@@ -35,6 +35,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú Maestro - Teams UV</title>
     <link rel="stylesheet" href="CSS/Menu.css">
+    <style>
+
+        /* Estilo específico para el primer elemento del submenú */
+        .submenuPrincipal a:first-child {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff; /* Color blanco */
+            background-color: rgba(89, 201, 98); /* Fondo verde para destacar */
+
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .submenuPrincipal a:first-child:hover {
+            background-color: rgb(46, 114, 52); /* Fondo más oscuro al hover */
+            transform: scale(1.05);
+        }
+
+        /* Estilo adicional para el enlace destacado */
+        .lateral .submenuPrincipal .highlight-link {
+            color: #ffffff; /* Color blanco */
+            font-weight: bold;
+            background-color: rgba(89, 201, 98); /* Fondo verde para destacar */
+        }
+
+        .lateral .submenuPrincipal .highlight-link:hover {
+            color: #ffffff; /* Color blanco */
+            background-color: rgb(46, 114, 52); /* Fondo más oscuro al hover */
+        }
+
+        .info-section {
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .info-section h2 {
+            font-size: 20px;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .info-section p, .info-section ul {
+            font-size: 16px;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+
+        .info-section ul li {
+            margin-bottom: 10px;
+            list-style: disc;
+            margin-left: 20px;
+        }
+    </style>
     <script>
         function toggleSubmenu(id) {
             const submenu = document.getElementById(id);
@@ -51,7 +108,7 @@
         <div>
             <div class="menu-item" onclick="toggleSubmenu('formsSubmenu')">Chats de trabajo</div>
             <div id="formsSubmenu" class="submenuPrincipal">
-                <a href="CrearChats.jsp?maestro=<%=n_control%>">-- Crear un chat --</a>
+                <a href="CrearChats.jsp?maestro=<%=n_control%>">-- CREAR CHAT --</a>
                 <%
                     if (listaMaterias != null && !listaMaterias.isEmpty()) {
                         for (Grupos grupo : listaMaterias) {
@@ -67,7 +124,9 @@
                 <%
                     }
                 %>
-                <a href="ModificarEliminarChats.jsp?maestro=<%=n_control%>">MODIFICAR O ELIMINAR CHATS</a>
+                <a href="ModificarEliminarChats.jsp?maestro=<%=n_control%>" class="highlight-link">
+                    MODIFICAR O ELIMINAR
+                </a>
             </div>
         </div>
         <a href="ConfiguracionMaestro.jsp">Perfil</a>
@@ -78,7 +137,7 @@
     <div class="main-content">
         <div class="header">
             <h1>Bienvenido maestro: <%= request.getSession().getAttribute("nombre") %>
-
+            </h1>
         </div>
         <div class="info-section">
             <h2>Gestión de Grupos</h2>
@@ -107,3 +166,5 @@
 </div>
 </body>
 </html>
+
+

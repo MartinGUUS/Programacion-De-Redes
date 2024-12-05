@@ -54,21 +54,7 @@ body {
     margin-left: 20px;
 }
 
-/* Estilo específico para el primer elemento del submenú */
-.submenuPrincipal a:first-child {
-    font-size: 16px;
-    font-weight: bold;
-    color: #ffffff; /* Color blanco */
-    background-color: rgba(89, 201, 98); /* Fondo verde para destacar */
 
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.submenuPrincipal a:first-child:hover {
-    background-color: rgb(46, 114, 52); /* Fondo más oscuro al hover */
-    transform: scale(1.05);
-}
 
 /* Estilo general para otros elementos del submenú */
 .submenuPrincipal a {
@@ -149,6 +135,7 @@ body {
     transform: scale(0.95); /* Efecto de presionado */
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Reduce la sombra al presionar */
 }
+
 
 
 
