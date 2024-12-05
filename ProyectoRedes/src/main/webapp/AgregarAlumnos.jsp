@@ -28,6 +28,12 @@
         idgrupo = "Sin id grupo";
     }
 
+    String nombre = request.getParameter("nombre");
+    if (nombre == null || nombre.isEmpty()) {
+        nombre = "no se recibio nombre en agregar alumno";
+    }
+
+
 %>
 
 <!DOCTYPE html>
@@ -134,6 +140,7 @@
             <form action="BuscarAlumnoServlet" method="get" class="form-busqueda">
                 <input type="hidden" name="materia" value="<%= materia %>">
                 <input type="hidden" name="id_grupos" value="<%= idgrupo %>">
+                <input type="hidden" name="nombre" value="<%= nombre %>">
                 <input type="text" id="busqueda" name="busqueda" placeholder="Ingresa la matrícula..." required>
                 <button type="submit" class="btn-buscar">Buscar</button>
             </form>
@@ -161,6 +168,7 @@
                             <input type="hidden" name="id_grupos" value="<%= idgrupo %>">
                             <input type="hidden" name="ncontrol" value="<%= n_control %>">
                             <input type="hidden" name="materia" value="<%= materia %>">
+                            <input type="hidden" name="nombre" value="<%= nombre %>">
 
                             <button type="submit" class="btn-agregar">Agregar</button>
                         </form>

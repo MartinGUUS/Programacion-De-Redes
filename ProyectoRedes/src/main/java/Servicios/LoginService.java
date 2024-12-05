@@ -1,9 +1,6 @@
 package Servicios;
 
-import Modelo.Alumnos;
-import Modelo.Grupos;
-import Modelo.Grupos_Alumnos;
-import Modelo.Maestros;
+import Modelo.*;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -39,5 +36,9 @@ public interface LoginService extends Remote {
     List<Alumnos> obtenerTodosLosAlumnosPorGrupo(int grupo) throws RemoteException;
 
     boolean eliminarAlumnoDeGrupo(String matricula, int grupo) throws RemoteException;
+
+    void enviarMensaje(Mensajes mensaje) throws RemoteException;
+
+    List<Mensajes> obtenerMensajesPorGrupo(int idGrupo) throws RemoteException;
 
 }

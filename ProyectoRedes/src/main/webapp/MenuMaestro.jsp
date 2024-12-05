@@ -18,6 +18,8 @@
 
     // Obtener la matrícula del usuario desde la sesión
     String n_control = (String) request.getSession().getAttribute("usuario");
+    String nombreMaestro = (String) request.getSession().getAttribute("nombre");
+
 
     // Llamar al servicio RMI para obtener las materias
     List<Grupos> listaMaterias = null;
@@ -113,7 +115,7 @@
                     if (listaMaterias != null && !listaMaterias.isEmpty()) {
                         for (Grupos grupo : listaMaterias) {
                 %>
-                <a href="ChatMaestro.jsp?id_grupos=<%= grupo.getId_grupos() %>&materia=<%= grupo.getNombre() %>">
+                <a href="ChatMaestro.jsp?id_grupos=<%= grupo.getId_grupos() %>&materia=<%= grupo.getNombre() %>&nombre=<%=nombreMaestro%>">
                     <%= grupo.getNombre() %>
                 </a>
                 <%

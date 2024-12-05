@@ -23,6 +23,7 @@ public class BuscarAlumnoServlet extends HttpServlet {
         String matricula = request.getParameter("busqueda");
         String materia = request.getParameter("materia");
         String id_grupos = request.getParameter("id_grupos");
+        String nombre = request.getParameter("nombre");
         Alumnos alumno = null;
 
         try {
@@ -37,6 +38,7 @@ public class BuscarAlumnoServlet extends HttpServlet {
         request.setAttribute("resultadosBusqueda", alumno);
         request.setAttribute("materia", materia);
         request.setAttribute("id_grupos", id_grupos);
+        request.setAttribute("nombre", nombre);
 
         request.getRequestDispatcher("AgregarAlumnos.jsp").forward(request, response);
     }

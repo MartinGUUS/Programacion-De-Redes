@@ -86,7 +86,7 @@
                     if (listaMaterias != null && !listaMaterias.isEmpty()) {
                         for (Grupos_Alumnos grupo : listaMaterias) {
                 %>
-                <a href="ChatAlumno.jsp?materia=<%= grupo.getNombreMateria() %>">
+                <a href="ChatAlumno.jsp?materia=<%= grupo.getNombreMateria() %>&id_grupos=<%= grupo.getFk_grupos() %>">
                     <%= grupo.getNombreMateria() %>
                 </a>
                 <%

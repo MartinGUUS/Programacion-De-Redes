@@ -3,6 +3,7 @@
 <%@ page import="Servicios.LoginService" %>
 <%@ page import="java.rmi.Naming" %>
 <%@ page import="Modelo.Grupos" %>
+<%@ page import="Modelo.Mensajes" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
     // Configurar las cabeceras de la respuesta para evitar caché
@@ -28,7 +29,6 @@
         e.printStackTrace();
     }
 %>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -63,26 +63,88 @@
             background-color: #003f8c;
             transform: scale(0.95);
         }
+
+        /* Estilo para las imágenes */
+        .chat-image {
+            max-width: 100px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .chat-image:hover {
+            transform: scale(1.2);
+        }
+
+        /* Estilo para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #ccc;
+        }
     </style>
 
     <script>
-        function toggleSubmenu(id) {
-            const submenu = document.getElementById(id);
-            submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+        function showModal(imgSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'flex'; // Cambiado a 'flex' para centrar
+            modalImg.src = imgSrc;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
         }
     </script>
 </head>
 <body>
 <%
     String materia = request.getParameter("materia");
-    String idgrupo = request.getParameter("id_grupos");
     if (materia == null || materia.isEmpty()) {
         materia = "Sin nombre";
     }
-    if (idgrupo == null || idgrupo.isEmpty()) {
-        idgrupo = "Sin nombre";
+
+    String nombre = request.getParameter("nombre");
+    if (nombre == null || materia.isEmpty()) {
+        nombre = "Sin nombre maestro";
     }
+
+    String idgrupo = request.getParameter("id_grupos");
+    if (idgrupo == null || idgrupo.isEmpty()) {
+        idgrupo = "0"; // Asignar un valor por defecto para evitar errores
+    }
+
 %>
+
 <div class="main">
     <div class="lateral">
         <h1>Teams UV</h1>
@@ -95,24 +157,67 @@
         <div class="header">
             <h1>Chat de <%= materia %>
             </h1>
-            <a href="AgregarAlumnos.jsp?materia=<%= materia %>&id_grupos=<%=idgrupo%>" class="agregarAlu">Agregar
-                alumnos</a>
-            <a href="VerMiembros.jsp?materia=<%= materia %>&id_grupos=<%=idgrupo%>" class="agregarAlu">Ver alumnos
-                de <%=materia%>
+            <a href="AgregarAlumnos.jsp?materia=<%= materia %>&id_grupos=<%=idgrupo%>&nombre=<%=nombre%>"
+               class="agregarAlu">Agregar alumnos</a>
+
+            <a href="VerMiembros.jsp?materia=<%= materia %>&id_grupos=<%=idgrupo%>&nombre=<%=nombre%>"
+               class="agregarAlu">Ver alumnos de <%=materia%>
             </a>
+
         </div>
         <div class="chat-container">
-            <div class="chat-messages">
-                <p><strong>Profesor:</strong> Bienvenido al chat de <%= materia %>.</p>
-                <p><strong>Profesor:</strong> Por favor, revisa los materiales publicados.</p>
+            <div class="chat-container">
+                <div class="chat-messages">
+                    <%
+                        List<Mensajes> mensajes = null;
+                        try {
+                            LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
+                            mensajes = loginService.obtenerMensajesPorGrupo(Integer.parseInt(idgrupo));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        if (mensajes != null) {
+                            for (Mensajes mensaje : mensajes) {
+                                if (mensaje.getTexto() == null) mensaje.setTexto("Imagen enviada");
+                    %>
+                    <p><strong><%= nombre %>
+                        :</strong> <%= mensaje.getTexto()%>
+                    </p>
+                    <% if (mensaje.getImagen() != null) { %>
+                    <img
+                            class="chat-image"
+                            src="data:image/png;base64,<%= java.util.Base64.getEncoder().encodeToString(mensaje.getImagen()) %>"
+                            alt="Imagen"
+                            onclick="showModal(this.src)">
+                    <% } %>
+                    <% }
+                    } else {
+                    %>
+                    <p>No hay mensajes en este grupo.</p>
+                    <% } %>
+                </div>
+                <form class="chat-input" method="post" enctype="multipart/form-data" action="EnviarMensajeServlet">
+                    <textarea name="mensaje" placeholder="Escribe un mensaje..." rows="3"></textarea>
+                    <input type="file" name="imagen" accept="image/*">
+                    <input type="hidden" name="grupo" value="<%=idgrupo%>">
+                    <input type="hidden" name="nom" value="<%=nombre%>">
+                    <input type="hidden" name="materia" value="<%=materia%>">
+                    <button type="submit">Enviar</button>
+                </form>
             </div>
-            <form class="chat-input" method="post" enctype="multipart/form-data" action="EnviarMensajeServlet">
-                <textarea name="mensaje" placeholder="Escribe un mensaje..." rows="3"></textarea>
-                <input type="file" name="imagen" accept="image/*">
-                <button type="submit">Enviar</button>
-            </form>
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage" alt="Imagen ampliada">
+</div>
+
 </body>
 </html>
+
+
+

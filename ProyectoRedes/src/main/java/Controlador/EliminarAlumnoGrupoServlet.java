@@ -18,6 +18,8 @@ public class EliminarAlumnoGrupoServlet extends HttpServlet {
         String matricula = request.getParameter("matricula");
         String grupoStr = request.getParameter("id_grupos");
         String materia = request.getParameter("materia");
+        String nombre = request.getParameter("nombre");
+
         int grupoint = 0;
         if (grupoStr != null && !grupoStr.equals("")) {
             grupoint = Integer.parseInt(grupoStr);
@@ -26,7 +28,7 @@ public class EliminarAlumnoGrupoServlet extends HttpServlet {
         try {
             LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
             loginService.eliminarAlumnoDeGrupo(matricula, grupoint);
-            response.sendRedirect("ChatMaestro.jsp?materia=" + materia + "&id_grupos=" + grupoint);
+            response.sendRedirect("ChatMaestro.jsp?materia=" + materia + "&id_grupos=" + grupoint+ "&nombre=" + nombre);
         } catch (Exception e) {
             System.out.println(e.toString());
         }

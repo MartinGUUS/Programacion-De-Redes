@@ -1,10 +1,7 @@
 package Servicios.impl;
 
 import Datos.*;
-import Modelo.Alumnos;
-import Modelo.Grupos;
-import Modelo.Grupos_Alumnos;
-import Modelo.Maestros;
+import Modelo.*;
 import Servicios.LoginService;
 
 import java.rmi.server.UnicastRemoteObject;
@@ -180,24 +177,41 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
         gruposDAO.insertarGrupo(nombre, fkMaestro);
     }
 
+    @Override
     public void desactivarGrupo(int id_grupos) {
         GruposDAO gruposDAO = new GruposDAO();
         gruposDAO.desactivarGrupo(id_grupos);
     }
 
+    @Override
     public void actualizarNombre(String nombre, int idgrupo) {
         GruposDAO gruposDAO = new GruposDAO();
         gruposDAO.actualizarNombre(nombre, idgrupo);
     }
 
+    @Override
     public List<Alumnos> obtenerTodosLosAlumnosPorGrupo(int grupo) {
         Grupos_AlumnosDAO gruposDAO = new Grupos_AlumnosDAO();
         return gruposDAO.obtenerTodosLosAlumnosPorGrupo(grupo);
     }
 
+    @Override
     public boolean eliminarAlumnoDeGrupo(String matricula, int grupo) {
         Grupos_AlumnosDAO gruposDAO = new Grupos_AlumnosDAO();
         return gruposDAO.eliminarAlumnoDeGrupo(matricula, grupo);
+    }
+
+
+    @Override
+    public void enviarMensaje(Mensajes mensaje) {
+        MensajesDAO mensajesDAO = new MensajesDAO();
+        mensajesDAO.insertarMensaje(mensaje);
+    }
+
+    @Override
+    public List<Mensajes> obtenerMensajesPorGrupo(int idGrupo) {
+        MensajesDAO mensajesDAO = new MensajesDAO();
+        return mensajesDAO.obtenerMensajesPorGrupo(idGrupo);
     }
 
 }

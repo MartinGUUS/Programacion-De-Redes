@@ -21,6 +21,8 @@ public class AgregarAlumnoGrupoServlet extends HttpServlet {
         String grupoStr = request.getParameter("id_grupos");
         String ncontrol = request.getParameter("ncontrol");
         String materia = request.getParameter("materia");
+        String nombre = request.getParameter("nombre");
+        System.out.println(nombre);
 
         // Validar si el parámetro 'id_grupos' es válido
         if (grupoStr == null || grupoStr.isEmpty()) {
@@ -38,7 +40,7 @@ public class AgregarAlumnoGrupoServlet extends HttpServlet {
                 System.out.println("ya esta el alumno");
             }
 
-            response.sendRedirect("ChatMaestro.jsp?id_grupos=" + grupo + "&materia=" + materia); // Cambia 'success.jsp' por la página adecuada
+            response.sendRedirect("ChatMaestro.jsp?materia=" + materia + "&id_grupos=" + grupo + "&nombre=" + nombre);
         } catch (NumberFormatException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "El ID del grupo debe ser un número válido.");

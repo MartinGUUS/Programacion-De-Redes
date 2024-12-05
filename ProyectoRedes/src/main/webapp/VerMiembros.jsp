@@ -46,6 +46,11 @@
         materia = "Sin nombre";
     }
 
+    String nombre = request.getParameter("nombre");
+    if (nombre == null || nombre.isEmpty()) {
+        nombre = "sin nombre";
+    }
+
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -140,6 +145,9 @@
                             <input type="hidden" name="matricula" value="<%= alumno.getMatricula() %>">
                             <input type="hidden" name="id_grupos" value="<%= id_grupo %>">
                             <input type="hidden" name="materia" value="<%= materia %>">
+                            <input type="hidden" name="nombre" value="<%= nombre %>">
+
+
                             <button type="submit" class="btn-eliminar">Eliminar</button>
                         </form>
                     </td>

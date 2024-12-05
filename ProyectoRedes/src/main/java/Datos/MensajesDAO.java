@@ -9,8 +9,41 @@ import java.util.List;
 public class MensajesDAO {
 
     private static final String INSERT_MENSAJE = "INSERT INTO mensajes (fk_maestros, fk_grupos, texto, imagen, fecha_envio) VALUES (?, ?, ?, ?, ?)";
-    private static final String SELECT_ALL_MENSAJES = "SELECT * FROM mensajes";
+    private static final String SELECT_ALL_MENSAJES = "SELECT * FROM mensajes where fk_grupos = ?";
+    private static final String SELECT_MENSAJES_POR_GRUPO =
+            "SELECT * FROM mensajes WHERE fk_grupos = ? ORDER BY fecha_envio ASC";
 
+    public List<Mensajes> obtenerMensajesPorGrupo(int idGrupo) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Mensajes> listaMensajes = new ArrayList<>();
+        try {
+            connection = Conexion.getConexion();
+            ps = connection.prepareStatement(SELECT_MENSAJES_POR_GRUPO);
+            ps.setInt(1, idGrupo);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Mensajes mensaje = new Mensajes(
+                        rs.getInt("id_mensajes"),
+                        rs.getString("fk_maestros"),
+                        rs.getInt("fk_grupos"),
+                        rs.getString("texto"),
+                        rs.getBytes("imagen"),
+                        rs.getTimestamp("fecha_envio")
+                );
+                listaMensajes.add(mensaje);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener mensajes por grupo: " + e.getMessage());
+        } finally {
+            Conexion.cerrarResultSet(rs);
+            Conexion.cerrarStatement(ps);
+            Conexion.cerrarConexion(connection);
+        }
+        return listaMensajes;
+    }
 
     public void insertarMensaje(Mensajes mensaje) {
         Connection connection = null;
@@ -57,7 +90,7 @@ public class MensajesDAO {
     }
 
 
-    public List<Mensajes> obtenerTodosLosMensajes() {
+    public List<Mensajes> obtenerTodosLosMensajes(int idGrupo) {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -65,6 +98,7 @@ public class MensajesDAO {
         try {
             connection = Conexion.getConexion();
             ps = connection.prepareStatement(SELECT_ALL_MENSAJES);
+            ps.setInt(1, idGrupo);
             rs = ps.executeQuery();
 
             while (rs.next()) {
