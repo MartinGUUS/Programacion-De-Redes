@@ -1,5 +1,6 @@
 package Datos;
 
+import Modelo.Alumnos;
 import Modelo.Grupos_Alumnos;
 
 import java.sql.*;
@@ -11,6 +12,45 @@ public class Grupos_AlumnosDAO {
     private static final String INSERT_GRUPO_ALUMNO = "INSERT INTO grupos_alumnos (fk_grupos, fk_alumnos, fk_maestros) VALUES (?, ?, ?)";
     private static final String SELECT_BY_MAESTRO = "SELECT * FROM grupos_alumnos WHERE fk_maestros = ?";
     private static final String SELECT_BY_ALUMNO = "SELECT * FROM grupos_alumnos WHERE fk_alumnos = ? and fk_grupos=?";
+    private static final String SELECT_ALUMNOS_POR_GRUPO =
+            "SELECT a.matricula, a.nombre, a.segundo_nombre, a.apellido_paterno, a.apellido_materno, a.correo " +
+                    "FROM grupos_alumnos ga " +
+                    "JOIN alumnos a ON ga.fk_alumnos = a.matricula " +
+                    "WHERE ga.fk_grupos = ?";
+
+    public List<Alumnos> obtenerTodosLosAlumnosPorGrupo(int grupo) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Alumnos> listaAlumnos = new ArrayList<>();
+        try {
+            connection = Conexion.getConexion();
+            ps = connection.prepareStatement(SELECT_ALUMNOS_POR_GRUPO);
+            ps.setInt(1, grupo);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Alumnos alumno = new Alumnos(
+                        rs.getString("matricula"),
+                        rs.getString("nombre"),
+                        rs.getString("segundo_nombre"),
+                        rs.getString("apellido_paterno"),
+                        rs.getString("apellido_materno"),
+                        rs.getString("correo"),
+                        ""
+                );
+                listaAlumnos.add(alumno);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener todos los alumnos: " + e.getMessage());
+        } finally {
+            Conexion.cerrarResultSet(rs);
+            Conexion.cerrarStatement(ps);
+            Conexion.cerrarConexion(connection);
+        }
+        return listaAlumnos;
+    }
+
 
     public int obtenerGruposPorAlumno(String matricula, int idGrupo) {
         Connection connection = null;

@@ -68,27 +68,6 @@
     <div class="lateral">
         <h1>Teams UV</h1>
         <a href="MenuMaestro.jsp">Inicio</a>
-        <div>
-            <div class="menu-item" onclick="toggleSubmenu('formsSubmenu')">Gestión de Grupos</div>
-            <div id="formsSubmenu" class="submenuPrincipal">
-                <a href="CrearChats.jsp?maestro=<%=n_control%>">-- Crear un chat --</a>
-                <%
-                    if (listaMaterias != null && !listaMaterias.isEmpty()) {
-                        for (Grupos grupo : listaMaterias) {
-                %>
-                <a href="ChatMaestro.jsp?materia=<%= grupo.getNombre() %>">
-                    <%= grupo.getNombre() %>
-                </a>
-                <%
-                    }
-                } else {
-                %>
-                <p>No tienes materias inscritas.</p>
-                <%
-                    }
-                %>
-            </div>
-        </div>
         <a href="ConfiguracionMaestro.jsp">Perfil</a>
         <a href="CerrarSesionServlet">Cerrar sesión</a>
     </div>

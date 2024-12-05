@@ -190,4 +190,9 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
         gruposDAO.actualizarNombre(nombre, idgrupo);
     }
 
+    public List<Alumnos> obtenerTodosLosAlumnosPorGrupo(int grupo) {
+        Grupos_AlumnosDAO gruposDAO = new Grupos_AlumnosDAO();
+        return gruposDAO.obtenerTodosLosAlumnosPorGrupo(grupo);
+    }
+
 }

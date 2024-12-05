@@ -57,28 +57,6 @@
     <div class="lateral">
         <h1>Teams UV</h1>
         <a href="MenuAlumno.jsp">Inicio</a>
-        <div>
-            <div class="menu-item" onclick="toggleSubmenu('formsSubmenu')">Chats de trabajo</div>
-            <div id="formsSubmenu" class="submenuPrincipal">
-                <a href="#">-- Unirse a un chat --</a>
-                <%
-                    if (listaMaterias != null && !listaMaterias.isEmpty()) {
-                        for (Grupos_Alumnos grupo : listaMaterias) {
-                %>
-                <a href="ChatAlumno.jsp?materia=<%= grupo.getNombreMateria() %>">
-                    <%= grupo.getNombreMateria() %>
-                </a>
-                <%
-                    }
-                } else {
-                %>
-                <p>No tienes materias inscritas.</p>
-                <%
-                    }
-                %>
-            </div>
-
-        </div>
         <a href="#">Perfil</a>
         <a href="CerrarSesionServlet">Cerrar sesión</a>
     </div>
