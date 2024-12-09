@@ -24,6 +24,37 @@ public class Grupos_AlumnosDAO {
     private static final String COUNT_ALUMNOS_EN_GRUPO =
             "SELECT COUNT(*) FROM grupos_alumnos WHERE fk_alumnos = ? AND fk_grupos = ?";
 
+    private static final String COUNT_MAESTRO_EN_GRUPO =
+            "SELECT COUNT(*) FROM grupos_alumnos WHERE fk_maestros = ? AND fk_grupos = ?";
+
+    public int contarMaestrosEnGrupo(String matricula, int grupo) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int count = 0;
+
+        try {
+            connection = Conexion.getConexion();
+            ps = connection.prepareStatement(COUNT_MAESTRO_EN_GRUPO);
+            ps.setString(1, matricula);
+            ps.setInt(2, grupo);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                count = rs.getInt(1); // Obtiene el valor del conteo
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al contar los Maestros en el grupo: " + e.getMessage());
+        } finally {
+            Conexion.cerrarResultSet(rs);
+            Conexion.cerrarStatement(ps);
+            Conexion.cerrarConexion(connection);
+        }
+
+        return count;
+    }
+
+
     public int contarAlumnosEnGrupo(String matricula, int grupo) {
         Connection connection = null;
         PreparedStatement ps = null;

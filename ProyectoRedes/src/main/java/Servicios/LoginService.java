@@ -43,4 +43,6 @@ public interface LoginService extends Remote {
 
     int contarAlumnosEnGrupo(String matricula, int grupo) throws RemoteException;
 
+    int contarMaestrosEnGrupo(String matricula, int grupo) throws RemoteException;
+
 }
