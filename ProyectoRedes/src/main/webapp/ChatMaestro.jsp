@@ -209,7 +209,8 @@
                     <% } %>
                 </div>
                 <form class="chat-input" method="post" enctype="multipart/form-data" action="EnviarMensajeServlet">
-                    <textarea name="mensaje" placeholder="Escribe un mensaje..." rows="3" style="font-family: JetBrains Mono"></textarea>
+                    <textarea name="mensaje" placeholder="Escribe un mensaje..." rows="3"
+                              style="font-family: JetBrains Mono"></textarea>
                     <input type="file" name="imagen" accept="image/*" style="font-family: JetBrains Mono">
                     <input type="hidden" name="grupo" value="<%=idgrupo%>">
                     <input type="hidden" name="nom" value="<%=nombre%>">

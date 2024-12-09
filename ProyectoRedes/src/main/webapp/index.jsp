@@ -16,6 +16,8 @@
             padding: 0;
         }
 
+
+
     </style>
     <script>
         // Limpia los campos del formulario después de enviarlo

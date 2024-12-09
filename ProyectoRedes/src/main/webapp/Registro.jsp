@@ -26,12 +26,21 @@
         }
 
     </style>
+
+    <script>
+        // Limpia los campos del formulario después de enviarlo
+        function limpiarCampos(form) {
+            setTimeout(() => {
+                form.reset();
+            }, 50); // Limpia después de un breve retardo para garantizar que los datos se envían primero
+        }
+    </script>
 </head>
 <body>
 <div class="register-container">
     <div class="register-card">
         <h2>Registrate</h2>
-        <form action="registerServlet" method="post">
+        <form action="registerServlet" method="post" onsubmit="limpiarCampos(this);">
             <div class="form-group">
                 <label for="matricula">Matricula o numero de control</label>
                 <input type="text" id="matricula" name="matricula" required>
