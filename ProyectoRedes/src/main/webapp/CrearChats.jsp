@@ -35,6 +35,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú Maestro - Teams UV</title>
     <link rel="stylesheet" href="CSS/Menu.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+          rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'JetBrains Mono', sans-serif;
+            margin: 0; /* Opcional: quita los márgenes predeterminados */
+            padding: 0;
+        }
+
+    </style>
     <style>
         .form-container {
             max-width: 600px;
@@ -84,6 +96,22 @@
         .form-container button:hover {
             background-color: #005bb5;
         }
+
+        .btn-buscar:hover {
+            background-color: #005bb5;
+        }
+
+        .btn-buscar {
+            background-color: #0879ef;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -101,19 +129,22 @@
     <div class="main-content">
         <div class="header">
             <h1>Crear un nuevo grupo</h1>
+
         </div>
         <div class="info-section">
             <div class="form-container">
 
                 <form action="CrearGrupoServlet" method="post">
                     <label for="nombreGrupo">Nombre del Grupo:</label>
-                    <input type="text" id="nombreGrupo" name="nombreGrupo" placeholder="Ingrese el nombre del grupo"
+                    <input type="text" id="nombreGrupo" name="nombreGrupo" style="font-family: JetBrains Mono"
+                           placeholder="Ingrese el nombre del grupo"
                            required>
 
                     <label for="ncontrol">Numero de control maestro:</label>
-                    <input type="text" id="ncontrol" name="ncontrol" value="<%= n_control %>" readonly>
+                    <input type="text" id="ncontrol" name="ncontrol" value="<%= n_control %>"
+                           style="font-family: JetBrains Mono" readonly>
 
-                    <button type="submit">Crear Grupo</button>
+                    <button type="submit" style="font-family: JetBrains Mono">Crear Grupo</button>
                 </form>
             </div>
         </div>

@@ -24,21 +24,28 @@ public class BuscarAlumnoServlet extends HttpServlet {
         String materia = request.getParameter("materia");
         String id_grupos = request.getParameter("id_grupos");
         String nombre = request.getParameter("nombre");
+        String mensaje = "";
         Alumnos alumno = null;
 
         try {
+
             LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
-            alumno = loginService.obtenerAlumnoPorMatricula(matricula);
+            if (loginService.contarAlumnosEnGrupo(matricula, Integer.parseInt(id_grupos)) == 0) {
+                alumno = loginService.obtenerAlumnoPorMatricula(matricula);
+            }else{
+                mensaje = "El alumno ya esta en el grupo";
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Error al buscar el alumno: " + e.getMessage());
+            request.setAttribute("mensaje", "Error al buscar el alumno: " + e.getMessage());
         }
 
-        // Reenviar valores al JSP
         request.setAttribute("resultadosBusqueda", alumno);
         request.setAttribute("materia", materia);
         request.setAttribute("id_grupos", id_grupos);
         request.setAttribute("nombre", nombre);
+        request.setAttribute("mensaje", mensaje);
+
 
         request.getRequestDispatcher("AgregarAlumnos.jsp").forward(request, response);
     }

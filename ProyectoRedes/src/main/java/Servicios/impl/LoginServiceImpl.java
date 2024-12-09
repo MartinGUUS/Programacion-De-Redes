@@ -214,4 +214,10 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
         return mensajesDAO.obtenerMensajesPorGrupo(idGrupo);
     }
 
+
+    @Override
+    public int contarAlumnosEnGrupo(String matricula, int grupo) {
+        Grupos_AlumnosDAO gruposDAO = new Grupos_AlumnosDAO();
+        return gruposDAO.contarAlumnosEnGrupo(matricula, grupo);
+    }
 }

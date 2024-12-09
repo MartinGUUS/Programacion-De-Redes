@@ -25,6 +25,8 @@ public class RegistroServlet extends HttpServlet {
         String apellidoMaterno = request.getParameter("apellidoMaterno");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String confirm_password = request.getParameter("confirm_password");
+        String mensaje = "";
 
         RegistroService registroService;
         try {
@@ -36,26 +38,31 @@ public class RegistroServlet extends HttpServlet {
 
         try {
             boolean registrado = false;
+            if (confirm_password.equals(password)) {
+                if (matricula.toLowerCase().startsWith("zs")) {
+                    // Es un alumno
+                    Alumnos alumno = new Alumnos(
+                            matricula, nombre, segundoNombre, apellidoPaterno, apellidoMaterno, email, password
+                    );
+                    registrado = registroService.registrarAlumno(alumno);
+                } else {
+                    // Es un maestro
+                    Maestros maestro = new Maestros(
+                            matricula, nombre, segundoNombre, apellidoPaterno, apellidoMaterno, email, password
+                    );
+                    registrado = registroService.registrarMaestro(maestro);
+                }
+                mensaje = "Error: Matricula registrada";
 
-            if (matricula.toLowerCase().startsWith("zs")) {
-                // Es un alumno
-                Alumnos alumno = new Alumnos(
-                        matricula, nombre, segundoNombre, apellidoPaterno, apellidoMaterno, email, password
-                );
-                registrado = registroService.registrarAlumno(alumno);
             } else {
-                // Es un maestro
-                Maestros maestro = new Maestros(
-                        matricula, nombre, segundoNombre, apellidoPaterno, apellidoMaterno, email, password
-                );
-                registrado = registroService.registrarMaestro(maestro);
+                mensaje = "Contraseñas no sin iguales";
             }
-
             if (registrado) {
                 response.sendRedirect("index.jsp?mensaje=Registro exitoso");
             } else {
-                response.sendRedirect("Registro.jsp?error=No se pudo completar el registro");
+                response.sendRedirect("Registro.jsp?error=" + mensaje);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("Registro.jsp?error=Error al conectar con el servidor");

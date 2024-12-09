@@ -1,3 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%
+    String mensaje = (String) request.getParameter("error");
+    if (mensaje == null || mensaje.isBlank() || mensaje.isEmpty()) {
+
+    }
+
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,6 +14,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Proyecto Redes</title>
     <link rel="stylesheet" href="CSS/Registrar.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+          rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'JetBrains Mono', sans-serif;
+            margin: 0; /* Opcional: quita los márgenes predeterminados */
+            padding: 0;
+        }
+
+    </style>
 </head>
 <body>
 <div class="register-container">
@@ -43,8 +64,12 @@
                 <label for="confirm_password">Confirmar contrasena</label>
                 <input type="password" id="confirm_password" name="confirm_password" required>
             </div>
-            <button type="submit" class="register-button">Registrar</button>
+            <button type="submit" class="register-button" style="font-family: JetBrains Mono">Registrar</button>
         </form>
+        <% if (mensaje != null) { %>
+        <p style="color: red;"><%= mensaje %>
+        </p>
+        <% }%>
         <p class="login-link">Ya tienes una cuenta? <a href="index.jsp">Inicia sesion aqui</a></p>
     </div>
 </div>

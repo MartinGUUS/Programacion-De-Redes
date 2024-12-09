@@ -34,6 +34,12 @@
     }
 
 
+    String mensaje = request.getParameter("mensaje");
+    if (mensaje == null || mensaje.isEmpty()) {
+        mensaje = "Usuario no encontrado.";
+    }
+
+
 %>
 
 <!DOCTYPE html>
@@ -43,7 +49,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Alumnos - Teams UV</title>
     <link rel="stylesheet" href="CSS/Menu.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+          rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'JetBrains Mono', sans-serif;
+            margin: 0; /* Opcional: quita los márgenes predeterminados */
+            padding: 0;
+        }
 
+    </style>
     <style>
         .form-busqueda {
             display: flex;
@@ -61,6 +78,22 @@
         }
 
         .form-busqueda .btn-buscar {
+            background-color: #0879ef;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-buscar:hover {
+            background-color: #005bb5;
+        }
+
+        .btn-buscar {
             background-color: #0879ef;
             color: white;
             font-size: 14px;
@@ -135,6 +168,10 @@
         <div class="header">
             <h1>Agregar alumnos en <%= materia %>
             </h1>
+            <button type="button" class="btn-buscar" style="font-family: JetBrains Mono"
+                    onclick="window.location.href='ChatMaestro.jsp?id_grupos=<%=idgrupo%>&materia=<%=materia%>&nombre=<%=nombre%>'">
+                Atras
+            </button>
         </div>
         <div class="info-section">
             <form action="BuscarAlumnoServlet" method="get" class="form-busqueda">
@@ -142,7 +179,8 @@
                 <input type="hidden" name="id_grupos" value="<%= idgrupo %>">
                 <input type="hidden" name="nombre" value="<%= nombre %>">
                 <input type="text" id="busqueda" name="busqueda" placeholder="Ingresa la matrícula..." required>
-                <button type="submit" class="btn-buscar">Buscar</button>
+                <button type="submit" class="btn-buscar" style="font-family: JetBrains Mono">Buscar</button>
+
             </form>
 
 
@@ -175,9 +213,15 @@
 
                     </td>
                 </tr>
+                <% } else if (mensaje != null) { %>
+                <tr>
+                    <td colspan="3"><%= mensaje%>
+                    </td>
+                </tr>
                 <% } else { %>
                 <tr>
-                    <td colspan="3">No se encontraron resultados.</td>
+                    <td colspan="3">Usuario no encontrado.
+                    </td>
                 </tr>
                 <% } %>
                 </tbody>

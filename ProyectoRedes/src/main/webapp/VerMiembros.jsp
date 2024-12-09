@@ -59,9 +59,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú Maestro - Teams UV</title>
     <link rel="stylesheet" href="CSS/Menu.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+          rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'JetBrains Mono', sans-serif;
+            margin: 0; /* Opcional: quita los márgenes predeterminados */
+            padding: 0;
+        }
+
+    </style>
     <style>
         .info-section {
             margin: 20px;
+        }
+
+        .btn-buscar:hover {
+            background-color: #005bb5;
+        }
+
+        .btn-buscar {
+            background-color: #0879ef;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .tabla-alumnos {
@@ -120,6 +148,10 @@
     <div class="main-content">
         <div class="header">
             <h1>Consulta los miembros de la clase</h1>
+            <button type="button" class="btn-buscar" style="font-family: JetBrains Mono"
+                    onclick="window.location.href='ChatMaestro.jsp?id_grupos=<%=id_grupo%>&materia=<%=materia%>&nombre=<%=nombre%>'">
+                Atras
+            </button>
         </div>
         <div class="info-section">
             <h3>Alumnos del Grupo</h3>
@@ -136,9 +168,12 @@
                 <% if (listaAlumnos != null && !listaAlumnos.isEmpty()) {
                     for (Alumnos alumno : listaAlumnos) { %>
                 <tr>
-                    <td><%= alumno.getMatricula() %></td>
-                    <td><%= alumno.getNombre() + " " + alumno.getSegundo_nombre() + " " + alumno.getApellido_paterno() + " " + alumno.getApellido_materno() %></td>
-                    <td><%= alumno.getCorreo() %></td>
+                    <td><%= alumno.getMatricula() %>
+                    </td>
+                    <td><%= alumno.getNombre() + " " + alumno.getSegundo_nombre() + " " + alumno.getApellido_paterno() + " " + alumno.getApellido_materno() %>
+                    </td>
+                    <td><%= alumno.getCorreo() %>
+                    </td>
                     <td>
                         <!-- Botón para eliminar -->
                         <form action="EliminarAlumnoGrupoServlet" method="post">
@@ -148,7 +183,8 @@
                             <input type="hidden" name="nombre" value="<%= nombre %>">
 
 
-                            <button type="submit" class="btn-eliminar">Eliminar</button>
+                            <button type="submit" class="btn-eliminar" style="font-family: JetBrains Mono">Eliminar
+                            </button>
                         </form>
                     </td>
                 </tr>

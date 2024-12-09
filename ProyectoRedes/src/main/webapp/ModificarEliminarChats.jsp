@@ -34,6 +34,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar o Eliminar Chats - Teams UV</title>
     <link rel="stylesheet" href="CSS/Menu.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+          rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'JetBrains Mono', sans-serif;
+            margin: 0; /* Opcional: quita los márgenes predeterminados */
+            padding: 0;
+        }
+
+    </style>
     <script>
         function toggleSubmenu(id) {
             const submenu = document.getElementById(id);
@@ -142,13 +154,15 @@
                     <form action="ModificarEliminarGrupoServlet" method="post">
                         <td>
                             <input type="hidden" name="id_grupo" value="<%= grupo.getId_grupos() %>">
-                            <input type="text" name="nombre_grupo" value="<%= grupo.getNombre() %>" class="input-nombre">
+                            <input type="text" style="font-family: JetBrains Mono" name="nombre_grupo" value="<%= grupo.getNombre() %> "
+                                   class="input-nombre">
                         </td>
                         <td>
                             <!-- Botón para guardar cambios -->
-                            <button type="submit" name="accion" value="guardar" class="btn-guardar">Guardar Cambios</button>
+                            <button type="submit" name="accion" value="guardar" class="btn-guardar" style="font-family: JetBrains Mono">Guardar Cambios
+                            </button>
                             <!-- Botón para borrar el grupo -->
-                            <button type="submit" name="accion" value="eliminar" class="btn-eliminar">Eliminar</button>
+                            <button type="submit" name="accion" value="eliminar" class="btn-eliminar" style="font-family: JetBrains Mono">Eliminar</button>
                         </td>
                     </form>
                 </tr>

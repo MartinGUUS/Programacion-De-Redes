@@ -41,4 +41,6 @@ public interface LoginService extends Remote {
 
     List<Mensajes> obtenerMensajesPorGrupo(int idGrupo) throws RemoteException;
 
+    int contarAlumnosEnGrupo(String matricula, int grupo) throws RemoteException;
+
 }
