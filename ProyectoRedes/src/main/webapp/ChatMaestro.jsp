@@ -143,6 +143,8 @@
     </script>
 
 
+
+
 </head>
 <body>
 <%
@@ -240,16 +242,7 @@
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage" alt="Imagen ampliada">
 </div>
-<script>
-    // Función para desplazar automáticamente el div hacia el final
-    function scrollToBottom() {
-        const chatMessages = document.querySelector('.chat-messages');
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
 
-    // Llama a la función al cargar la página
-    window.onload = scrollToBottom;
-</script>
 
 </body>
 </html>

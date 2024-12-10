@@ -180,14 +180,36 @@
 
         ws.onmessage = function (event) {
             var mensaje = event.data;
-            var chatContainer = document.querySelector('.chat-messages');
-            var p = document.createElement('p');
-            // Aquí usamos innerHTML para insertar HTML con negritas
-            p.innerHTML = "<strong>" + nombreMaestro + ":</strong> " + mensaje;
-            chatContainer.appendChild(p);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
 
+            // Parsear el JSON recibido
+            var msgObj = JSON.parse(mensaje);
+
+            var chatContainer = document.querySelector('.chat-messages');
+
+            // Crear un contenedor para el mensaje
+            var messageElement = document.createElement('div');
+
+            // Crear el texto del mensaje
+            var p = document.createElement('p');
+            p.innerHTML = "<strong>" + nombreMaestro + ":</strong> " + (msgObj.text ? msgObj.text : "Se ha enviado una imagen");
+            messageElement.appendChild(p);
+
+            // Si hay una imagen, agregarla
+            if (msgObj.type === "image") {
+                var img = document.createElement('img');
+                img.className = "chat-image";
+                img.src = "data:image/png;base64," + msgObj.imageData;
+                img.onclick = function () {
+                    showModal(this.src);
+                };
+                messageElement.appendChild(img);
+            }
+
+            // Agregar el mensaje en la parte superior
+            chatContainer.prepend(messageElement);
         };
+
+
     </script>
 
 
@@ -249,15 +271,6 @@
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage" alt="Imagen ampliada">
 </div>
-<script>
-    // Función para desplazar automáticamente el div hacia el final
-    function scrollToBottom() {
-        const chatMessages = document.querySelector('.chat-messages');
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
 
-    // Llama a la función al cargar la página
-    window.onload = scrollToBottom;
-</script>
 </body>
 </html>
