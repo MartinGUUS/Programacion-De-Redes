@@ -191,7 +191,7 @@
 
             // Crear el texto del mensaje
             var p = document.createElement('p');
-            p.innerHTML = "<strong>" + nombreMaestro + ":</strong> " + (msgObj.text ? msgObj.text : "Se ha enviado una imagen");
+            p.innerHTML = "<strong>" + nombreMaestro + " :</strong> " + (msgObj.text ? msgObj.text : "Se ha enviado una imagen");
             messageElement.appendChild(p);
 
             // Si hay una imagen, agregarla
