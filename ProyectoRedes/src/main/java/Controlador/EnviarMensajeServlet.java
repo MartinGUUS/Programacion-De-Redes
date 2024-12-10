@@ -1,6 +1,8 @@
 package Controlador;
 
+import Datos.ChatWebSocketEndpoint;
 import Modelo.Mensajes;
+import Datos.ChatSocketServer;
 import Servicios.LoginService;
 
 import javax.servlet.ServletException;
@@ -25,16 +27,15 @@ public class EnviarMensajeServlet extends HttpServlet {
         String materia = request.getParameter("materia");
         String nombre = request.getParameter("nom");
 
-
-        // Obtener el parámetro "mensaje"
+        // Obtener el texto del mensaje
         Part mensajePart = request.getPart("mensaje");
         String texto = null;
         if (mensajePart != null) {
             texto = new BufferedReader(new InputStreamReader(mensajePart.getInputStream()))
-                    .lines().collect(Collectors.joining("\n"));
+                    .lines().collect(Collectors.joining("\n")).trim(); // Eliminar espacios en blanco
         }
 
-        // Obtener el parámetro "grupo"
+        // Obtener el grupo
         Part grupoPart = request.getPart("grupo");
         String grupo = null;
         if (grupoPart != null) {
@@ -42,34 +43,56 @@ public class EnviarMensajeServlet extends HttpServlet {
                     .lines().collect(Collectors.joining("\n"));
         }
 
-        // Imprimir para depuración
-        System.out.println("el grupo id es: " + grupo + " mensaje: " + texto);
+        // Validación básica para grupo
+        if (grupo == null || grupo.trim().isEmpty()) {
+            return; // Terminar si no hay grupo
+        }
 
-        if (grupo != null && !grupo.equals("")) {
-            int fk_grupos = Integer.parseInt(grupo);
-            byte[] imagen = null;
+        int fk_grupos = Integer.parseInt(grupo);
 
-            // Obtener el archivo de imagen
-            Part imagenPart = request.getPart("imagen");
-            if (imagenPart != null && imagenPart.getSize() > 0) {
-                imagen = imagenPart.getInputStream().readAllBytes();
+        // Obtener el archivo de imagen
+        byte[] imagen = null;
+        Part imagenPart = request.getPart("imagen");
+        if (imagenPart != null && imagenPart.getSize() > 0) {
+            imagen = imagenPart.getInputStream().readAllBytes();
+        }
+
+        // Validar que haya texto o imagen
+        if ((texto == null || texto.trim().isEmpty()) && imagen == null) {
+            System.out.println("Mensaje vacío: no se enviará nada.");
+            response.sendRedirect("ChatMaestro.jsp?id_grupos=" + fk_grupos + "&materia=" + materia + "&nombre=" + nombre);
+            return; // No hacer nada si ambos están vacíos
+        }
+
+        try {
+            // Asegurarte de que el servicio RMI esté corriendo
+            LoginService mensajeriaService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
+
+            Mensajes mensaje;
+            if (texto == null || texto.trim().isEmpty()) {
+                // Solo imagen
+                mensaje = new Mensajes(0, fk_maestros, fk_grupos, "Se ha enviado una imagen", imagen, new Timestamp(System.currentTimeMillis()));
+            } else {
+                // Texto y/o imagen
+                mensaje = new Mensajes(0, fk_maestros, fk_grupos, texto, imagen, new Timestamp(System.currentTimeMillis()));
             }
 
-            try {
-                // Asegúrate de que el servicio RMI esté corriendo y registrado correctamente
-                LoginService mensajeriaService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
-                if (texto == null && imagen != null) {
-                    Mensajes mensaje = new Mensajes(0, fk_maestros, fk_grupos, "Se ha enviado una imagen", imagen, new Timestamp(System.currentTimeMillis()));
-                    mensajeriaService.enviarMensaje(mensaje);
-                } else {
-                    Mensajes mensaje = new Mensajes(0, fk_maestros, fk_grupos, texto, imagen, new Timestamp(System.currentTimeMillis()));
-                    mensajeriaService.enviarMensaje(mensaje);
-                }
-                response.sendRedirect("ChatMaestro.jsp?id_grupos=" + fk_grupos + "&materia=" + materia + "&nombre=" + nombre);
-            } catch (Exception e) {
-                
-                e.printStackTrace();
+            // Guardar en la base de datos
+            mensajeriaService.enviarMensaje(mensaje);
+
+            // Enviar mensaje a WebSocket y demás conexiones
+            if (texto != null && !texto.trim().isEmpty()) {
+                ChatSocketServer.broadcastMessage(texto, fk_grupos);
+                ChatWebSocketEndpoint.enviarMensajeAGrupo(fk_grupos, texto);
+            } else if (imagen != null) {
+                ChatSocketServer.broadcastMessage("Se ha enviado una imagen - recarga pagina", fk_grupos);
+                ChatWebSocketEndpoint.enviarMensajeAGrupo(fk_grupos, "Se ha enviado una imagen - recarga pagina");
             }
+
+            response.sendRedirect("ChatMaestro.jsp?id_grupos=" + fk_grupos + "&materia=" + materia + "&nombre=" + nombre);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

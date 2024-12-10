@@ -121,6 +121,11 @@
         .close:hover {
             color: #ccc;
         }
+
+        .chat-messages {
+            max-height: 350px;
+
+        }
     </style>
 
     <script>
@@ -136,6 +141,8 @@
             modal.style.display = 'none';
         }
     </script>
+
+
 </head>
 <body>
 <%
@@ -176,7 +183,7 @@
             </a>
 
         </div>
-        <div class="chat-container">
+        <div class="chat-container-principal">
             <div class="chat-container">
                 <div class="chat-messages">
                     <%
@@ -209,16 +216,22 @@
                     <% } %>
                 </div>
                 <form class="chat-input" method="post" enctype="multipart/form-data" action="EnviarMensajeServlet">
-                    <textarea name="mensaje" placeholder="Escribe un mensaje..." rows="3"
-                              style="font-family: JetBrains Mono"></textarea>
-                    <input type="file" name="imagen" accept="image/*" style="font-family: JetBrains Mono">
-                    <input type="hidden" name="grupo" value="<%=idgrupo%>">
-                    <input type="hidden" name="nom" value="<%=nombre%>">
-                    <input type="hidden" name="materia" value="<%=materia%>">
-                    <button type="submit" style="font-family: JetBrains Mono">Enviar</button>
+                    <div class="input-row">
+                        <!-- Botón de enviar -->
+                        <button type="submit">Enviar</button>
+                        <!-- Botón para adjuntar archivo -->
+                        <label for="file-input">Adjuntar</label>
+                        <input id="file-input" type="file" name="imagen" accept="image/*" hidden>
+                        <!-- Área de texto para el mensaje -->
+                        <textarea name="mensaje" placeholder="Escribe un mensaje..." rows="3"></textarea>
+                    </div>
+                    <input type="hidden" name="grupo" value="<%= idgrupo %>">
+                    <input type="hidden" name="nom" value="<%= nombre %>">
+                    <input type="hidden" name="materia" value="<%= materia %>">
                 </form>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -227,6 +240,16 @@
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage" alt="Imagen ampliada">
 </div>
+<script>
+    // Función para desplazar automáticamente el div hacia el final
+    function scrollToBottom() {
+        const chatMessages = document.querySelector('.chat-messages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Llama a la función al cargar la página
+    window.onload = scrollToBottom;
+</script>
 
 </body>
 </html>

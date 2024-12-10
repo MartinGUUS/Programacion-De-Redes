@@ -46,6 +46,18 @@
     } catch (Exception e) {
         e.printStackTrace();
     }
+
+
+    String nombre = "Sin nombre";
+    try {
+        LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
+        maestro = loginService.obtenerMaestroPorNControl(mensajes.get(0).getFk_maestros());
+        nombre = maestro.getNombre();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+
 %>
 
 <!DOCTYPE html>
@@ -160,6 +172,25 @@
             modal.style.display = 'none';
         }
     </script>
+
+    <script>
+        var idGrupo = <%= idgrupo %>;
+        var nombreMaestro = "<%= nombre %>";
+        var ws = new WebSocket("ws://localhost:8080/ProyectoRedes/wsChat?idGrupo=" + idGrupo);
+
+        ws.onmessage = function (event) {
+            var mensaje = event.data;
+            var chatContainer = document.querySelector('.chat-messages');
+            var p = document.createElement('p');
+            // Aquí usamos innerHTML para insertar HTML con negritas
+            p.innerHTML = "<strong>" + nombreMaestro + ":</strong> " + mensaje;
+            chatContainer.appendChild(p);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        };
+    </script>
+
+
 </head>
 <body>
 
@@ -186,6 +217,7 @@
                             }
                             LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
                             maestro = loginService.obtenerMaestroPorNControl(mensaje.getFk_maestros());
+                            nombre = maestro.getNombre();
                 %>
                 <p><strong><%= maestro.getNombre() %>
                     :</strong> <%= texto %>
@@ -217,6 +249,15 @@
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage" alt="Imagen ampliada">
 </div>
+<script>
+    // Función para desplazar automáticamente el div hacia el final
+    function scrollToBottom() {
+        const chatMessages = document.querySelector('.chat-messages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 
+    // Llama a la función al cargar la página
+    window.onload = scrollToBottom;
+</script>
 </body>
 </html>

@@ -8,6 +8,7 @@ import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 
 public class Main {
+
     public static void main(String[] args) {
         try {
             // Establece el puerto y el hostname
@@ -21,6 +22,8 @@ public class Main {
             Naming.rebind("rmi://localhost:1099/ServicioLogin", loginService);
 
             System.out.println("Servidor RMI iniciado correctamente");
+
+
         } catch (Exception e) {
             System.err.println("Error al iniciar el servidor RMI: " + e.getMessage());
         }

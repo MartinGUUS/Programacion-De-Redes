@@ -1,18 +1,26 @@
 /* Chat Styles */
-.chat-container {
+
+.chat-container-principal {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 80px);
-    border: 1px solid #E2E8F0;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 350px; /* Altura máxima total */
     overflow: hidden;
     background-color: #ffffff;
 }
 
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
 .chat-messages {
-    flex: 1;
-    padding: 20px;
+    flex-grow: 1; /* Ocupa el espacio disponible */
+    padding: 15px;
     overflow-y: auto;
     border-bottom: 1px solid #E2E8F0;
 }
@@ -29,15 +37,20 @@
 
 .chat-input {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 15px;
+    padding: 10px;
     background-color: #f7f9fc;
     border-top: 1px solid #E2E8F0;
 }
 
+.chat-input .input-row {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+}
+
 .chat-input textarea {
-    width: calc(100% - 20px); /* Se ajusta al 100% del contenedor */
+    flex: 1;
     padding: 10px;
     border: 1px solid #E2E8F0;
     border-radius: 5px;
@@ -46,36 +59,10 @@
     box-sizing: border-box;
 }
 
-.chat-input .input-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-
-.chat-input .input-row label {
-    background-color: #0879ef;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-    text-align: center;
-}
-
-.chat-input .input-row label:hover {
-    background-color: #005bb5;
-}
-
-.chat-input input[type="file"] {
-    font-size: 14px;
-}
-
 .chat-input button {
     background-color: #0879ef;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     border: none;
     padding: 10px 20px;
@@ -86,6 +73,38 @@
 
 .chat-input button:hover {
     background-color: #005bb5;
+}
+
+.chat-input label {
+    cursor: pointer;
+    background-color: #0879ef;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.chat-input label:hover {
+    background-color: #005bb5;
+}
+
+.chat-input .file-info {
+    font-size: 14px;
+    color: #4A5568;
+    background-color: #EDF2F7;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: none; /* Visible solo cuando se adjunta un archivo */
+}
+
+.chat-input .file-info.active {
+    display: inline-block;
+}
+
+.chat-input input[type="file"] {
+    display: none; /* Ocultamos el input de archivos */
 }
 
 div.header .btn-add {
@@ -112,10 +131,3 @@ div.header .btn-add:active {
     background-color: #003f8c;
     transform: scale(0.95);
 }
-
-
-
-
-
-
-
