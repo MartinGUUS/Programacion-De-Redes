@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @ServerEndpoint("/wsChat")
-public class ChatWebSocketEndpoint {
+public class webSocketsCHAT {
     // Mapa: idGrupo -> lista de sesiones
     private static Map<Integer, List<Session>> grupoSesiones = new ConcurrentHashMap<>();
 
@@ -48,6 +48,8 @@ public class ChatWebSocketEndpoint {
             }
         }
     }
+
+
 
     private int parsearIdGrupo(String query) {
         // Implementar lógica para extraer idGrupo del query string

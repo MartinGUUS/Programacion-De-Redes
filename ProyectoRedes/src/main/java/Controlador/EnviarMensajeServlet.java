@@ -1,8 +1,8 @@
 package Controlador;
 
-import Datos.ChatWebSocketEndpoint;
+import Datos.webSocketsCHAT;
+import Datos.webSocketsNotificaciones;
 import Modelo.Mensajes;
-import Datos.ChatSocketServer;
 import Servicios.LoginService;
 
 import javax.servlet.ServletException;
@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @WebServlet("/EnviarMensajeServlet")
 @MultipartConfig
 public class EnviarMensajeServlet extends HttpServlet {
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -68,6 +69,8 @@ public class EnviarMensajeServlet extends HttpServlet {
             }
 
             mensajeriaService.enviarMensaje(mensaje);
+            //webSocketsNotificaciones.notificarTodos("Nuevo mensaje enviado");
+
 
             if (imagen != null) {
                 String base64Image = Base64.getEncoder().encodeToString(imagen);
@@ -76,13 +79,13 @@ public class EnviarMensajeServlet extends HttpServlet {
                         "\"text\":\"" + (texto != null ? texto : "") + "\"," +
                         "\"imageData\":\"" + base64Image + "\"}";
 
-                ChatWebSocketEndpoint.enviarMensajeAGrupo(fk_grupos, jsonMessage);
+                webSocketsCHAT.enviarMensajeAGrupo(fk_grupos, jsonMessage);
             } else if (texto != null && !texto.trim().isEmpty()) {
                 String jsonMessage = "{" +
                         "\"type\":\"text\"," +
                         "\"text\":\"" + texto + "\"}";
 
-                ChatWebSocketEndpoint.enviarMensajeAGrupo(fk_grupos, jsonMessage);
+                webSocketsCHAT.enviarMensajeAGrupo(fk_grupos, jsonMessage);
             }
 
             response.sendRedirect("ChatMaestro.jsp?id_grupos=" + fk_grupos + "&materia=" + materia + "&nombre=" + nombre);

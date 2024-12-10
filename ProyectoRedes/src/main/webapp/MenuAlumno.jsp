@@ -82,6 +82,26 @@
             submenu.style.display = submenu.style.display === "block" ? "none" : "block";
         }
     </script>
+
+    <!--
+    <script>
+        const ws = new WebSocket("ws://localhost:8080/ProyectoRedes/wsNotificaciones");
+
+        ws.onmessage = function (event) {
+            const notificationButton = document.querySelector(".btn-notificaciones");
+
+            notificationButton.style.backgroundColor = "#ff0000";
+
+            setTimeout(() => {
+                notificationButton.style.backgroundColor = "#0879ef";
+            }, 1000);
+        };
+
+        ws.onerror = function (error) {
+            alert("Error en WebSocket:", error);
+        };
+    </script>
+    -->
 </head>
 <body>
 <div class="main">
@@ -120,7 +140,16 @@
         <div class="header">
             <h1>Bienvenido alumno: <%= request.getSession().getAttribute("nombre") %>
             </h1>
+            <button
+                    type="button"
+                    class="btn-notificaciones"
+                    style="margin-bottom: 20px; padding: 10px 20px; font-size: 14px; font-family: 'JetBrains Mono'; border: none; background-color: #0879ef; color: white; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+                Notificaciones
+            </button>
+
         </div>
+        <!-- Botón para redirigir a notificaciones -->
+
         <div class="info-section">
             <h2>Materias Inscritas</h2>
             <ul>
@@ -145,6 +174,7 @@
                 notificaciones importantes.</p>
         </div>
     </div>
+
 </div>
 </body>
 </html>
