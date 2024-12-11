@@ -89,20 +89,31 @@
             transition: background-color 0.3s ease;
         }
 
-        .btn-buscar:hover {
-            background-color: #005bb5;
-        }
 
         .btn-buscar {
+            display: inline-block;
             background-color: #0879ef;
             color: white;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
-            border: none;
-            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-buscar:hover {
+            background-color: #005bb5;
+            transform: scale(1.05);
+        }
+
+        .btn-buscar:active {
+            background-color: #005bb5;
+            transform: scale(0.95);
         }
 
         .form-busqueda .btn-buscar:hover {

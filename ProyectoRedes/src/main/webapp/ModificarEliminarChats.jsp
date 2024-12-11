@@ -96,20 +96,29 @@
 
         .btn-guardar,
         .btn-eliminar {
+            display: inline-block;
             background-color: #0879ef;
             color: white;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
-            border: none;
-            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            padding: 10px 20px;
             border-radius: 5px;
+            border: none;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-right: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .btn-guardar:hover {
             background-color: #005bb5;
+            transform: scale(1.05);
+        }
+
+        .btn-guardar:active {
+            background-color: #005bb5;
+            transform: scale(0.95);
         }
 
         .btn-eliminar {
@@ -118,6 +127,12 @@
 
         .btn-eliminar:hover {
             background-color: #cc0000;
+            transform: scale(1.05);
+        }
+
+        .btn-eliminar:active {
+            background-color: #cc0000;
+            transform: scale(0.95);
         }
     </style>
 </head>
@@ -154,15 +169,19 @@
                     <form action="ModificarEliminarGrupoServlet" method="post">
                         <td>
                             <input type="hidden" name="id_grupo" value="<%= grupo.getId_grupos() %>">
-                            <input type="text" style="font-family: JetBrains Mono" name="nombre_grupo" value="<%= grupo.getNombre() %> "
+                            <input type="text" style="font-family: JetBrains Mono" name="nombre_grupo"
+                                   value="<%= grupo.getNombre() %> "
                                    class="input-nombre">
                         </td>
                         <td>
                             <!-- Botón para guardar cambios -->
-                            <button type="submit" name="accion" value="guardar" class="btn-guardar" style="font-family: JetBrains Mono">Guardar Cambios
+                            <button type="submit" name="accion" value="guardar" class="btn-guardar"
+                                    style="font-family: JetBrains Mono">Guardar Cambios
                             </button>
                             <!-- Botón para borrar el grupo -->
-                            <button type="submit" name="accion" value="eliminar" class="btn-eliminar" style="font-family: JetBrains Mono">Eliminar</button>
+                            <button type="submit" name="accion" value="eliminar" class="btn-eliminar"
+                                    style="font-family: JetBrains Mono">Eliminar
+                            </button>
                         </td>
                     </form>
                 </tr>

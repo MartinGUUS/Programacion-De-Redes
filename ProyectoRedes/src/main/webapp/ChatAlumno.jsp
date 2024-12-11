@@ -77,7 +77,30 @@
         }
     </style>
     <style>
+        .agregarAlu {
+            display: inline-block;
+            background-color: #0879ef;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
+        .agregarAlu:hover {
+            background-color: #005bb5;
+            transform: scale(1.05);
+        }
+
+        .agregarAlu:active {
+            background-color: #003f8c;
+            transform: scale(0.95);
+        }
 
         /* Estilo para las imágenes */
         .chat-image {
@@ -127,10 +150,14 @@
         }
 
         .chat-messages {
-            max-height: 400px;
+            min-height: 150px;
+            max-height: 500px;
             overflow-y: auto;
         }
-    </style>
+
+        .chat-container {
+            min-height: 150px;
+        }
     </style>
 
     <script>

@@ -226,9 +226,11 @@
                 <form class="chat-input" method="post" enctype="multipart/form-data" action="EnviarMensajeServlet">
                     <div class="input-row">
                         <!-- Botón de enviar -->
-                        <button type="submit">Enviar</button>
+                        <button type="submit" style="font-family: 'JetBrains Mono', sans-serif" class="agregarAlu">
+                            Enviar
+                        </button>
                         <!-- Botón para adjuntar archivo -->
-                        <label for="file-input">Adjuntar</label>
+                        <label for="file-input" class="agregarAlu">Adjuntar</label>
                         <input id="file-input" type="file" name="imagen" accept="image/*" hidden>
                         <!-- Área de texto para el mensaje -->
                         <textarea name="mensaje" placeholder="Escribe un mensaje..." rows="3"></textarea>

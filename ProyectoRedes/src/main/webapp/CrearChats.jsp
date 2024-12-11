@@ -112,6 +112,31 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
+        .agregarAlu {
+            display: inline-block;
+            background-color: #0879ef;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .agregarAlu:hover {
+            background-color: #005bb5;
+            transform: scale(1.05);
+        }
+
+        .agregarAlu:active {
+            background-color: #003f8c;
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
@@ -144,7 +169,8 @@
                     <input type="text" id="ncontrol" name="ncontrol" value="<%= n_control %>"
                            style="font-family: JetBrains Mono" readonly>
 
-                    <button type="submit" style="font-family: JetBrains Mono">Crear Grupo</button>
+                    <button type="submit" style="font-family: JetBrains Mono" class="agregarAlu">Crear Grupo
+                    </button>
                 </form>
             </div>
         </div>
