@@ -4,7 +4,7 @@
 <%@ page import="java.rmi.Naming" %>
 <%@ page import="Modelo.Grupos" %>
 <%@ page import="Modelo.Mensajes" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="Modelo.Maestros" %>
 <%
     // Configurar las cabeceras de la respuesta para evitar caché
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
@@ -16,22 +16,31 @@
         return;
     }
 
-
     // Obtener la matrícula del usuario desde la sesión
     String n_control = (String) request.getSession().getAttribute("usuario");
 
-    // Llamar al servicio RMI para obtener las materias
-    List<Grupos> listaMaterias = null;
-    try {
-        LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
-        listaMaterias = loginService.obtenerGruposPorMaestro(n_control);
-    } catch (Exception e) {
-        e.printStackTrace();
+    // Obtener los parámetros de la materia y el id_grupos
+    String materia = request.getParameter("materia");
+    if (materia == null || materia.isEmpty()) {
+        materia = "Sin nombre";
     }
+
+    String nombre = request.getParameter("nombre");
+    if (nombre == null || nombre.isEmpty()) {
+        nombre = "Sin nombre maestro";
+    }
+
+    String idgrupo = request.getParameter("id_grupos");
+    if (idgrupo == null || idgrupo.isEmpty()) {
+        idgrupo = "0"; // Valor por defecto
+    }
+
 %>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- (Mantener el resto del head igual) -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat de Materias</title>
@@ -44,10 +53,9 @@
     <style>
         html, body {
             font-family: 'JetBrains Mono', sans-serif;
-            margin: 0; /* Opcional: quita los márgenes predeterminados */
+            margin: 0;
             padding: 0;
         }
-
     </style>
     <style>
         .agregarAlu {
@@ -123,8 +131,13 @@
         }
 
         .chat-messages {
-            max-height: 350px;
+            min-height: 150px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
 
+        .chat-container {
+            min-height: 150px;
         }
     </style>
 
@@ -142,34 +155,15 @@
         }
     </script>
 
-
 </head>
 <body>
-<%
-    String materia = request.getParameter("materia");
-    if (materia == null || materia.isEmpty()) {
-        materia = "Sin nombre";
-    }
-
-    String nombre = request.getParameter("nombre");
-    if (nombre == null || materia.isEmpty()) {
-        nombre = "Sin nombre maestro";
-    }
-
-    String idgrupo = request.getParameter("id_grupos");
-    if (idgrupo == null || idgrupo.isEmpty()) {
-        idgrupo = "0"; // Asignar un valor por defecto para evitar errores
-    }
-
-%>
 
 <div class="main">
     <div class="lateral">
         <h1>Teams UV</h1>
         <a href="MenuMaestro.jsp">Inicio</a>
-
         <a href="ConfiguracionMaestro.jsp">Perfil</a>
-        <a href="CerrarSesionServlet">Cerrar sesión</a>
+        <a href="CerrarSesionServlet">Cerrar sesion</a>
     </div>
     <div class="main-content">
         <div class="header">
@@ -179,9 +173,8 @@
                class="agregarAlu">Agregar alumnos</a>
 
             <a href="VerMiembros.jsp?materia=<%= materia %>&id_grupos=<%=idgrupo%>&nombre=<%=nombre%>"
-               class="agregarAlu">Ver alumnos de <%=materia%>
+               class="agregarAlu">Ver alumnos
             </a>
-
         </div>
         <div class="chat-container-principal">
             <div class="chat-container">
@@ -195,26 +188,41 @@
                             e.printStackTrace();
                         }
 
-                        if (mensajes != null) {
+                        if (mensajes != null && !mensajes.isEmpty()) {
                             for (Mensajes mensaje : mensajes) {
-                                if (mensaje.getTexto() == null) mensaje.setTexto("Imagen enviada");
+                                String texto = mensaje.getTexto();
+                                if (texto == null || texto.trim().isEmpty()) {
+                                    texto = "Imagen enviada";
+                                }
+                                // Obtener el maestro para el mensaje
+                                String nombreMaestroActual = "Maestro Desconocido";
+                                try {
+                                    LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
+                                    Maestros maestroActual = loginService.obtenerMaestroPorNControl(mensaje.getFk_maestros());
+                                    if (maestroActual != null) {
+                                        nombreMaestroActual = maestroActual.getNombre();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                     %>
-                    <p><strong><%= nombre %>
-                        :</strong> <%= mensaje.getTexto()%>
+                    <p><strong><%= nombreMaestroActual %>:</strong> <%= texto %>
                     </p>
-                    <% if (mensaje.getImagen() != null) { %>
+                    <% if (mensaje.getImagen_url() != null && !mensaje.getImagen_url().isEmpty()) { %>
                     <img
                             class="chat-image"
-                            src="data:image/png;base64,<%= java.util.Base64.getEncoder().encodeToString(mensaje.getImagen()) %>"
+                            src="<%= mensaje.getImagen_url() %>"
                             alt="Imagen"
                             onclick="showModal(this.src)">
                     <% } %>
-                    <% }
+                    <%
+                        }
                     } else {
                     %>
                     <p>No hay mensajes en este grupo.</p>
                     <% } %>
                 </div>
+
                 <form class="chat-input" method="post" enctype="multipart/form-data" action="EnviarMensajeServlet">
                     <div class="input-row">
                         <!-- Botón de enviar -->
@@ -229,9 +237,9 @@
                     <input type="hidden" name="nom" value="<%= nombre %>">
                     <input type="hidden" name="materia" value="<%= materia %>">
                 </form>
+
             </div>
         </div>
-
     </div>
 </div>
 
@@ -241,9 +249,7 @@
     <img class="modal-content" id="modalImage" alt="Imagen ampliada">
 </div>
 
-
 </body>
+
+
 </html>
-
-
-

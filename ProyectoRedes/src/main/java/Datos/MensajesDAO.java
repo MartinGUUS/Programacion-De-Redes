@@ -8,11 +8,9 @@ import java.util.List;
 
 public class MensajesDAO {
 
-    private static final String INSERT_MENSAJE = "INSERT INTO mensajes (fk_maestros, fk_grupos, texto, imagen, fecha_envio) VALUES (?, ?, ?, ?, ?)";
-    private static final String SELECT_ALL_MENSAJES = "SELECT * FROM mensajes where fk_grupos = ?";
-    private static final String SELECT_MENSAJES_POR_GRUPO =
-            "SELECT * FROM mensajes WHERE fk_grupos = ? ORDER BY fecha_envio DESC";
-
+    private static final String INSERT_MENSAJE = "INSERT INTO mensajes (fk_maestros, fk_grupos, texto, imagen_url, fecha_envio) VALUES (?, ?, ?, ?, ?)";
+    private static final String SELECT_ALL_MENSAJES = "SELECT * FROM mensajes WHERE fk_grupos = ?";
+    private static final String SELECT_MENSAJES_POR_GRUPO = "SELECT * FROM mensajes WHERE fk_grupos = ? ORDER BY fecha_envio DESC";
 
     public List<Mensajes> obtenerMensajesPorGrupo(int idGrupo) {
         Connection connection = null;
@@ -31,7 +29,7 @@ public class MensajesDAO {
                         rs.getString("fk_maestros"),
                         rs.getInt("fk_grupos"),
                         rs.getString("texto"),
-                        rs.getBytes("imagen"),
+                        rs.getString("imagen_url"), // Obtener imagen_url como String
                         rs.getTimestamp("fecha_envio")
                 );
                 listaMensajes.add(mensaje);
@@ -58,20 +56,20 @@ public class MensajesDAO {
             ps.setString(1, mensaje.getFk_maestros());
             ps.setInt(2, mensaje.getFk_grupos());
 
-            //Si el texto es nulo se inserta como NULL
+            // Si el texto es nulo se inserta como NULL
             if (mensaje.getTexto() != null && !mensaje.getTexto().isEmpty()) {
                 ps.setString(3, mensaje.getTexto());
                 verificacion = true;
             } else {
-                ps.setNull(3, 0);
+                ps.setNull(3, Types.VARCHAR);
             }
 
-            // Si la imagen es nula se inserta como NULL
-            if (mensaje.getImagen() != null) {
-                ps.setBytes(4, mensaje.getImagen());
+            // Si la imagen_url es nula se inserta como NULL
+            if (mensaje.getImagen_url() != null && !mensaje.getImagen_url().isEmpty()) {
+                ps.setString(4, mensaje.getImagen_url());
                 verificacion = true;
             } else {
-                ps.setNull(4, 0);
+                ps.setNull(4, Types.VARCHAR);
             }
 
             ps.setTimestamp(5, mensaje.getFecha_envio());
@@ -90,7 +88,6 @@ public class MensajesDAO {
         }
     }
 
-
     public List<Mensajes> obtenerTodosLosMensajes(int idGrupo) {
         Connection connection = null;
         PreparedStatement ps = null;
@@ -108,7 +105,7 @@ public class MensajesDAO {
                         rs.getString("fk_maestros"),
                         rs.getInt("fk_grupos"),
                         rs.getString("texto"),
-                        rs.getBytes("imagen"),
+                        rs.getString("imagen_url"), // Obtener imagen_url como String
                         rs.getTimestamp("fecha_envio")
                 );
                 listaMensajes.add(mensaje);

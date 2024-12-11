@@ -4,7 +4,6 @@
 <%@ page import="Servicios.LoginService" %>
 <%@ page import="java.rmi.Naming" %>
 <%@ page import="Modelo.Maestros" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
     // Configurar las cabeceras de la respuesta para evitar caché
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
@@ -30,39 +29,37 @@
         idgrupo = "0"; // Valor por defecto
     }
 
-    // Llamar al servicio RMI para obtener los grupos del alumno (opcional, por si se requiere info adicional)
+    // Llamar al servicio RMI para obtener los grupos del alumno
     List<Grupos_Alumnos> listaMaterias = null;
     List<Mensajes> mensajes = null;
     Maestros maestro = null;
 
-
     try {
         LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
         listaMaterias = loginService.obtenerGruposPorAlumno(matricula);
-
         mensajes = loginService.obtenerMensajesPorGrupo(Integer.parseInt(idgrupo));
-
-
     } catch (Exception e) {
         e.printStackTrace();
     }
-
 
     String nombre = "Sin nombre";
-    try {
-        LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
-        maestro = loginService.obtenerMaestroPorNControl(mensajes.get(0).getFk_maestros());
-        nombre = maestro.getNombre();
-    } catch (Exception e) {
-        e.printStackTrace();
+    if (mensajes != null && !mensajes.isEmpty()) {
+        try {
+            LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
+            maestro = loginService.obtenerMaestroPorNControl(mensajes.get(0).getFk_maestros());
+            if (maestro != null) {
+                nombre = maestro.getNombre();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-
 %>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- (Mantener el resto del head igual) -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat de Materias</title>
@@ -75,38 +72,14 @@
     <style>
         html, body {
             font-family: 'JetBrains Mono', sans-serif;
-            margin: 0; /* Opcional: quita los márgenes predeterminados */
+            margin: 0;
             padding: 0;
         }
-
     </style>
     <style>
-        .agregarAlu {
-            display: inline-block;
-            background-color: #0879ef;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
 
-        .agregarAlu:hover {
-            background-color: #005bb5;
-            transform: scale(1.05);
-        }
 
-        .agregarAlu:active {
-            background-color: #003f8c;
-            transform: scale(0.95);
-        }
-
-        /* Estilo para las imágenes en el chat */
+        /* Estilo para las imágenes */
         .chat-image {
             max-width: 100px;
             cursor: pointer;
@@ -152,6 +125,12 @@
         .close:hover {
             color: #ccc;
         }
+
+        .chat-messages {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
     </style>
 
     <script>
@@ -174,6 +153,7 @@
     </script>
 
     <script>
+        // Inicializar el WebSocket
         var idGrupo = <%= idgrupo %>;
         var nombreMaestro = "<%= nombre %>";
         var ws = new WebSocket("ws://localhost:8080/ProyectoRedes/wsChat?idGrupo=" + idGrupo);
@@ -191,14 +171,14 @@
 
             // Crear el texto del mensaje
             var p = document.createElement('p');
-            p.innerHTML = "<strong>" + nombreMaestro + " :</strong> " + (msgObj.text ? msgObj.text : "Se ha enviado una imagen");
+            p.innerHTML = "<strong>" + nombreMaestro + ":</strong> " + (msgObj.text ? msgObj.text : "Se ha enviado una imagen");
             messageElement.appendChild(p);
 
             // Si hay una imagen, agregarla
-            if (msgObj.type === "image") {
+            if (msgObj.type === "image" && msgObj.imageData) {
                 var img = document.createElement('img');
                 img.className = "chat-image";
-                img.src = "data:image/png;base64," + msgObj.imageData;
+                img.src = msgObj.imageData; // Ahora es la URL de la imagen
                 img.onclick = function () {
                     showModal(this.src);
                 };
@@ -209,7 +189,12 @@
             chatContainer.prepend(messageElement);
         };
 
-
+        // Cerrar el WebSocket antes de cerrar la página
+        window.addEventListener('beforeunload', function () {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.close();
+            }
+        });
     </script>
 
 
@@ -221,7 +206,7 @@
         <h1>Teams UV</h1>
         <a href="MenuAlumno.jsp">Inicio</a>
         <a href="ConfiguracionesAlumnos.jsp">Perfil</a>
-        <a href="CerrarSesionServlet">Cerrar sesión</a>
+        <a href="CerrarSesionServlet">Cerrar sesion</a>
     </div>
     <div class="main-content">
         <div class="header">
@@ -237,17 +222,22 @@
                             if (texto == null || texto.trim().isEmpty()) {
                                 texto = "Imagen enviada";
                             }
-                            LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
-                            maestro = loginService.obtenerMaestroPorNControl(mensaje.getFk_maestros());
-                            nombre = maestro.getNombre();
+                            LoginService loginService = null;
+                            Maestros maestroActual = null;
+                            try {
+                                loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
+                                maestroActual = loginService.obtenerMaestroPorNControl(mensaje.getFk_maestros());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            String nombreMaestroActual = (maestroActual != null) ? maestroActual.getNombre() : "Maestro Desconocido";
                 %>
-                <p><strong><%= maestro.getNombre() %>
-                    :</strong> <%= texto %>
+                <p><strong><%= nombreMaestroActual %>:</strong> <%= texto %>
                 </p>
-                <% if (mensaje.getImagen() != null) { %>
+                <% if (mensaje.getImagen_url() != null && !mensaje.getImagen_url().isEmpty()) { %>
                 <img
                         class="chat-image"
-                        src="data:image/png;base64,<%= java.util.Base64.getEncoder().encodeToString(mensaje.getImagen()) %>"
+                        src="<%= mensaje.getImagen_url() %>"
                         alt="Imagen"
                         onclick="showModal(this.src)">
                 <% } %>

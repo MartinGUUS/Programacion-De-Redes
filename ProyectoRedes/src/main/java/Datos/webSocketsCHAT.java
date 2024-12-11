@@ -3,6 +3,8 @@ package Datos;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,23 +21,39 @@ public class webSocketsCHAT {
         String query = session.getQueryString(); // Ej: "idGrupo=1"
         int idGrupo = parsearIdGrupo(query);
 
-        grupoSesiones.computeIfAbsent(idGrupo, k -> new ArrayList<>()).add(session);
+        if (idGrupo != -1) {
+            grupoSesiones.computeIfAbsent(idGrupo, k -> new CopyOnWriteArrayList<>()).add(session);
+        } else {
+            System.out.println("idGrupo inválido: " + query);
+        }
     }
+
 
     @OnMessage
     public void onMessage(String message, Session session) {
-        // Opcional: si el alumno no envía mensajes, este método puede quedar vacío
+        // Opcional: Si los alumnos no envían mensajes, este método puede quedar vacío
     }
 
     @OnClose
     public void onClose(Session session) {
         // Remover la sesión de la lista correspondiente
-        // Se necesita conocer el idGrupo de la sesión; tal vez almacenarlo en la sesión
+        String query = session.getQueryString();
+        int idGrupo = parsearIdGrupo(query);
+        if (idGrupo != -1) {
+            List<Session> sesiones = grupoSesiones.get(idGrupo);
+            if (sesiones != null) {
+                sesiones.remove(session);
+                if (sesiones.isEmpty()) {
+                    grupoSesiones.remove(idGrupo);
+                }
+            }
+        }
+        System.out.println("WebSocket cerrado: " + session.getId());
     }
 
     @OnError
     public void onError(Session session, Throwable throwable) {
-        // Manejo de errores
+        System.out.println("Error en WebSocket: " + session.getId() + " - " + throwable.getMessage());
     }
 
     public static void enviarMensajeAGrupo(int idGrupo, String mensaje) {
@@ -50,14 +68,16 @@ public class webSocketsCHAT {
     }
 
 
-
     private int parsearIdGrupo(String query) {
         // Implementar lógica para extraer idGrupo del query string
         // Por ejemplo: "idGrupo=1" => return 1
         if (query != null && query.startsWith("idGrupo=")) {
-            return Integer.parseInt(query.substring("idGrupo=".length()));
+            try {
+                return Integer.parseInt(query.substring("idGrupo=".length()));
+            } catch (NumberFormatException e) {
+                System.out.println("Número de grupo inválido en query string: " + query);
+            }
         }
         return -1;
     }
 }
-

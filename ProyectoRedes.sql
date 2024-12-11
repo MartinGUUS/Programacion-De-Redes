@@ -55,11 +55,12 @@ CREATE TABLE mensajes (
     fk_maestros VARCHAR(20) NOT NULL,
     fk_grupos INT NOT NULL,
     texto TEXT,
-    imagen LONGBLOB,
+    imagen_url VARCHAR(2083), -- Longitud máxima recomendada para URLs
     fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (fk_maestros) REFERENCES maestros (n_control) ON DELETE CASCADE,
     FOREIGN KEY (fk_grupos) REFERENCES grupos (id_grupos) ON DELETE CASCADE
 );
+
 
 
 INSERT INTO maestros (n_control, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)

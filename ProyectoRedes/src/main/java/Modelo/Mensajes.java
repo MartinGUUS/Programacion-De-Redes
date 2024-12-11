@@ -3,25 +3,24 @@ package Modelo;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-
 public class Mensajes implements Serializable {
 
     private int id_mensajes;
     private String fk_maestros;
     private int fk_grupos;
     private String texto;
-    private byte[] imagen;
+    private String imagen_url; // Cambiado de byte[] a String
     private Timestamp fecha_envio;
 
     public Mensajes() {
     }
 
-    public Mensajes(int id_mensajes, String fk_maestros, int fk_grupos, String texto, byte[] imagen, Timestamp fecha_envio) {
+    public Mensajes(int id_mensajes, String fk_maestros, int fk_grupos, String texto, String imagen_url, Timestamp fecha_envio) {
         this.id_mensajes = id_mensajes;
         this.fk_maestros = fk_maestros;
         this.fk_grupos = fk_grupos;
         this.texto = texto;
-        this.imagen = imagen;
+        this.imagen_url = imagen_url;
         this.fecha_envio = fecha_envio;
     }
 
@@ -57,12 +56,12 @@ public class Mensajes implements Serializable {
         this.texto = texto;
     }
 
-    public byte[] getImagen() {
-        return imagen;
+    public String getImagen_url() {
+        return imagen_url;
     }
 
-    public void setImagen(byte[] imagen) {
-        this.imagen = imagen;
+    public void setImagen_url(String imagen_url) {
+        this.imagen_url = imagen_url;
     }
 
     public Timestamp getFecha_envio() {
