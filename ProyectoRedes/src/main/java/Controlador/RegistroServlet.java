@@ -15,7 +15,6 @@ import java.rmi.Naming;
 @WebServlet("/registerServlet")
 public class RegistroServlet extends HttpServlet {
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String matricula = request.getParameter("matricula");
@@ -40,13 +39,11 @@ public class RegistroServlet extends HttpServlet {
             boolean registrado = false;
             if (confirm_password.equals(password)) {
                 if (matricula.toLowerCase().startsWith("zs")) {
-                    // Es un alumno
                     Alumnos alumno = new Alumnos(
                             matricula, nombre, segundoNombre, apellidoPaterno, apellidoMaterno, email, password
                     );
                     registrado = registroService.registrarAlumno(alumno);
                 } else {
-                    // Es un maestro
                     Maestros maestro = new Maestros(
                             matricula, nombre, segundoNombre, apellidoPaterno, apellidoMaterno, email, password
                     );

@@ -1,7 +1,6 @@
 package Controlador;
 
 import Servicios.LoginService;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,7 +31,5 @@ public class EliminarAlumnoGrupoServlet extends HttpServlet {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-
-
     }
 }

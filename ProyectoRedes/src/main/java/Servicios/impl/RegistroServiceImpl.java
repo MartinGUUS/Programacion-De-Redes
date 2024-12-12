@@ -4,7 +4,6 @@ import Datos.AlumnosDAO;
 import Datos.MaestrosDAO;
 import Modelo.Alumnos;
 import Modelo.Maestros;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 

@@ -9,7 +9,7 @@ public class Mensajes implements Serializable {
     private String fk_maestros;
     private int fk_grupos;
     private String texto;
-    private String imagen_url; // Cambiado de byte[] a String
+    private String imagen_url;
     private Timestamp fecha_envio;
 
     public Mensajes() {

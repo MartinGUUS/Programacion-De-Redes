@@ -7,14 +7,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class TCPsockets {
-    /*private static List<ClientHandler> clientesConectados = new ArrayList<>();
+    /*private static List<GestorCliente> clientesConectados = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(9999);
         System.out.println("Servidor de chat listo en el puerto 9999...");
         while (true) {
             Socket socket = serverSocket.accept();
-            ClientHandler ch = new ClientHandler(socket);
+            GestorCliente ch = new GestorCliente(socket);
             synchronized (clientesConectados) {
                 clientesConectados.add(ch);
             }
@@ -37,7 +37,7 @@ class GestorCliente extends Thread {
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
-    private int idGrupo; // El cliente manda su id grupo al conectarse
+    private int idGrupo;
 
     public GestorCliente(Socket socket) throws IOException {
         this.socket = socket;
@@ -56,13 +56,11 @@ class GestorCliente extends Thread {
     @Override
     public void run() {
         try {
-            // Esperar a que el cliente envíe su idGrupo
             String line = in.readLine();
             if (line != null) {
                 this.idGrupo = Integer.parseInt(line);
             }
-            // A partir de aquí, el servidor puede mandar mensajes a este cliente.
-            // Este hilo puede también escuchar si el cliente manda algo si se desea.
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

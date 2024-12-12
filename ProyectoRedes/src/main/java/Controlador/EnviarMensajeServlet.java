@@ -3,7 +3,6 @@ package Controlador;
 import Datos.webSocketsCHAT;
 import Modelo.Mensajes;
 import Servicios.LoginService;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -21,8 +20,7 @@ import java.util.UUID;
 @MultipartConfig
 public class EnviarMensajeServlet extends HttpServlet {
 
-    // URL base para acceder a las imágenes desde el navegador
-    private static final String IMAGENES_URL = "http://localhost:8080/ProyectoRedes/imagenes/"; // Reemplaza según tu configuración
+    private static final String IMAGENES_URL = "http://localhost:8080/ProyectoRedes/imagenes/";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,7 +28,6 @@ public class EnviarMensajeServlet extends HttpServlet {
         String materia = request.getParameter("materia");
         String nombre = request.getParameter("nom");
 
-        // Obtener el texto del mensaje
         String texto = request.getParameter("mensaje");
         if (texto != null) {
             texto = texto.trim();
@@ -39,7 +36,6 @@ public class EnviarMensajeServlet extends HttpServlet {
             }
         }
 
-        // Obtener el id del grupo
         String grupo = request.getParameter("grupo");
         if (grupo == null || grupo.trim().isEmpty()) {
             response.sendRedirect("ChatMaestro.jsp?id_grupos=" + grupo + "&materia=" + materia + "&nombre=" + nombre);
@@ -51,35 +47,25 @@ public class EnviarMensajeServlet extends HttpServlet {
         String imagen_url = null;
         Part imagenPart = request.getPart("imagen");
         if (imagenPart != null && imagenPart.getSize() > 0) {
-            // Validar el tipo de archivo
-            String contentType = imagenPart.getContentType();
-            if (contentType.startsWith("image/")) {
-                // Generar un nombre único para la imagen
-                String fileExtension = getFileExtension(getFileName(imagenPart));
-                String fileName = UUID.randomUUID().toString() + fileExtension;
+            String tipoArchivo = imagenPart.getContentType();
+            if (tipoArchivo.startsWith("image/")) {
+                String extension = getExtencionArchivo(getNombreArchivo(imagenPart));
+                String nombreArchivo = UUID.randomUUID().toString() + extension;
+                String direccionImagen = getServletContext().getRealPath("/imagenes/");
 
-                // Obtener la ruta absoluta del directorio 'imagenes'
-                String imagenesPath = getServletContext().getRealPath("/imagenes/");
-
-                // Crear el archivo en el servidor
-                File uploads = new File(imagenesPath);
-                if (!uploads.exists()) {
-                    uploads.mkdirs();
+                File img = new File(direccionImagen);
+                if (!img.exists()) {
+                    img.mkdirs();
                 }
-                File file = new File(uploads, fileName);
+                File imgExtension = new File(img, nombreArchivo);
                 try (InputStream input = imagenPart.getInputStream()) {
-                    Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(input, imgExtension.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    // Manejar error de subida
-                    // Opcional: Redirigir con un mensaje de error
                 }
-                // Generar la URL accesible
-                imagen_url = IMAGENES_URL + fileName;
+                imagen_url = IMAGENES_URL + nombreArchivo;
             } else {
-                // Tipo de archivo no permitido
-                System.out.println("Tipo de archivo no permitido: " + contentType);
-                // Opcional: Redirigir con un mensaje de error
+                System.out.println("Tipo de archivo no permitido: " + tipoArchivo);
             }
         }
 
@@ -100,54 +86,50 @@ public class EnviarMensajeServlet extends HttpServlet {
             mensajeriaService.enviarMensaje(mensaje);
 
             if (imagen_url != null) {
-                String jsonMessage = "{" +
+                String json = "{" +
                         "\"type\":\"image\"," +
-                        "\"text\":\"" + escapeJson(texto != null ? texto : "") + "\"," +
+                        "\"text\":\"" + formatoJSON(texto != null ? texto : "") + "\"," +
                         "\"imageData\":\"" + imagen_url + "\"" +
                         "}";
 
-                webSocketsCHAT.enviarMensajeAGrupo(fk_grupos, jsonMessage);
+                webSocketsCHAT.enviarMensajeAGrupo(fk_grupos, json);
             } else if (texto != null) {
-                String jsonMessage = "{" +
+                String json = "{" +
                         "\"type\":\"text\"," +
-                        "\"text\":\"" + escapeJson(texto) + "\"" +
+                        "\"text\":\"" + formatoJSON(texto) + "\"" +
                         "}";
 
-                webSocketsCHAT.enviarMensajeAGrupo(fk_grupos, jsonMessage);
+                webSocketsCHAT.enviarMensajeAGrupo(fk_grupos, json);
             }
 
             response.sendRedirect("ChatMaestro.jsp?id_grupos=" + fk_grupos + "&materia=" + materia + "&nombre=" + nombre);
 
         } catch (Exception e) {
             e.printStackTrace();
-            // Opcional: Redirigir con un mensaje de error
         }
     }
 
-    // Método para obtener la extensión del archivo
-    private String getFileExtension(String fileName) {
-        if (fileName == null) return "";
-        int dotIndex = fileName.lastIndexOf('.');
-        return (dotIndex == -1) ? "" : fileName.substring(dotIndex);
+    private String getExtencionArchivo(String nombreArchivo) {
+        if (nombreArchivo == null) return "";
+        int index = nombreArchivo.lastIndexOf('.');
+        return (index == -1) ? "" : nombreArchivo.substring(index);
     }
 
-    // Método para obtener el nombre del archivo desde Part
-    private String getFileName(Part part) {
+    private String getNombreArchivo(Part part) {
         String header = part.getHeader("content-disposition");
         if (header == null) return null;
-        for (String content : header.split(";")) {
-            if (content.trim().startsWith("filename")) {
-                String fileName = content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
-                return fileName;
+        for (String contenido : header.split(";")) {
+            if (contenido.trim().startsWith("filename")) {
+                String nombreArchivo = contenido.substring(contenido.indexOf('=') + 1).trim().replace("\"", "");
+                return nombreArchivo;
             }
         }
         return null;
     }
 
-    // Método para escapar caracteres especiales en JSON
-    private String escapeJson(String text) {
-        if (text == null) return "";
-        return text.replace("\\", "\\\\")
+    private String formatoJSON(String texto) {
+        if (texto == null) return "";
+        return texto.replace("\\", "\\\\")
                 .replace("\"", "\\\"")
                 .replace("/", "\\/")
                 .replace("\b", "\\b")

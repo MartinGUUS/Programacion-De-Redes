@@ -1,8 +1,6 @@
 package Datos;
 
 import Modelo.Alumnos;
-import Modelo.Grupos_Alumnos;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +8,6 @@ import java.util.List;
 public class Grupos_AlumnosDAO {
 
     private static final String INSERT_GRUPO_ALUMNO = "INSERT INTO grupos_alumnos (fk_grupos, fk_alumnos, fk_maestros) VALUES (?, ?, ?)";
-    private static final String SELECT_BY_MAESTRO = "SELECT * FROM grupos_alumnos WHERE fk_maestros = ?";
     private static final String SELECT_BY_ALUMNO = "SELECT * FROM grupos_alumnos WHERE fk_alumnos = ? and fk_grupos=?";
     private static final String SELECT_ALUMNOS_POR_GRUPO =
             "SELECT a.matricula, a.nombre, a.segundo_nombre, a.apellido_paterno, a.apellido_materno, a.correo " +
@@ -41,7 +38,7 @@ public class Grupos_AlumnosDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                count = rs.getInt(1); // Obtiene el valor del conteo
+                count = rs.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println("Error al contar los Maestros en el grupo: " + e.getMessage());
@@ -69,7 +66,7 @@ public class Grupos_AlumnosDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                count = rs.getInt(1); // Obtiene el valor del conteo
+                count = rs.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println("Error al contar los alumnos en el grupo: " + e.getMessage());
@@ -185,6 +182,4 @@ public class Grupos_AlumnosDAO {
             Conexion.cerrarConexion(connection);
         }
     }
-
-
 }

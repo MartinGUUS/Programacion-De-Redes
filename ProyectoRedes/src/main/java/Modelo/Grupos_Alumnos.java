@@ -7,7 +7,7 @@ public class Grupos_Alumnos implements Serializable {
     private int fk_grupos;
     private String fk_alumnos;
     private String fk_maestros;
-    private String nombreMateria; // Nuevo atributo
+    private String nombreMateria;
 
     public Grupos_Alumnos() {
     }

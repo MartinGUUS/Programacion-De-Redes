@@ -19,19 +19,14 @@ public class ModificarEliminarGrupoServlet extends HttpServlet {
         String nombreGrupo = request.getParameter("nombre_grupo");
         String idGrupo = request.getParameter("id_grupo");
         String accion = request.getParameter("accion");
-
         if (accion.equals("eliminar")) {
             try {
                 LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
                 loginService.desactivarGrupo(Integer.parseInt(idGrupo));
-
-
                 response.sendRedirect("MenuMaestro.jsp");
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         } else if (accion.equals("guardar")) {
             try {
                 LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
@@ -41,7 +36,5 @@ public class ModificarEliminarGrupoServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-
-
     }
 }

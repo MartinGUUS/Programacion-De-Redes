@@ -21,17 +21,13 @@ public class CrearGrupoServlet extends HttpServlet {
         String ncontrol = request.getParameter("ncontrol");
 
         try {
-
             LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
             loginService.insertarGrupo(nombre, ncontrol);
-
             response.sendRedirect("MenuMaestro.jsp");
         } catch (NumberFormatException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 }

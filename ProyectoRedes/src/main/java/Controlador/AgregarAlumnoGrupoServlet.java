@@ -2,7 +2,6 @@ package Controlador;
 
 import Modelo.Alumnos;
 import Servicios.LoginService;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +13,6 @@ import java.rmi.Naming;
 @WebServlet("/AgregarAlumnoGrupoServlet")
 public class AgregarAlumnoGrupoServlet extends HttpServlet {
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String matricula = request.getParameter("matricula");
@@ -24,9 +22,8 @@ public class AgregarAlumnoGrupoServlet extends HttpServlet {
         String nombre = request.getParameter("nombre");
         System.out.println(nombre);
 
-        // Validar si el parámetro 'id_grupos' es válido
         if (grupoStr == null || grupoStr.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "El ID del grupo es obligatorio.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "id de grupo obligatorio");
             return;
         }
 
@@ -43,7 +40,7 @@ public class AgregarAlumnoGrupoServlet extends HttpServlet {
             response.sendRedirect("ChatMaestro.jsp?materia=" + materia + "&id_grupos=" + grupo + "&nombre=" + nombre);
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "El ID del grupo debe ser un número válido.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "id de grupo invalido");
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al agregar el alumno: " + e.getMessage());

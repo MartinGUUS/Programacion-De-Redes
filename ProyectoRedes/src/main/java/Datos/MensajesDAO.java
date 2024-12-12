@@ -1,7 +1,6 @@
 package Datos;
 
 import Modelo.Mensajes;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.List;
 public class MensajesDAO {
 
     private static final String INSERT_MENSAJE = "INSERT INTO mensajes (fk_maestros, fk_grupos, texto, imagen_url, fecha_envio) VALUES (?, ?, ?, ?, ?)";
-    private static final String SELECT_ALL_MENSAJES = "SELECT * FROM mensajes WHERE fk_grupos = ?";
     private static final String SELECT_MENSAJES_POR_GRUPO = "SELECT * FROM mensajes WHERE fk_grupos = ? ORDER BY fecha_envio DESC";
 
     public List<Mensajes> obtenerMensajesPorGrupo(int idGrupo) {
@@ -29,7 +27,7 @@ public class MensajesDAO {
                         rs.getString("fk_maestros"),
                         rs.getInt("fk_grupos"),
                         rs.getString("texto"),
-                        rs.getString("imagen_url"), // Obtener imagen_url como String
+                        rs.getString("imagen_url"),
                         rs.getTimestamp("fecha_envio")
                 );
                 listaMensajes.add(mensaje);
@@ -52,11 +50,10 @@ public class MensajesDAO {
         try {
             connection = Conexion.getConexion();
             ps = connection.prepareStatement(INSERT_MENSAJE);
-
             ps.setString(1, mensaje.getFk_maestros());
             ps.setInt(2, mensaje.getFk_grupos());
 
-            // Si el texto es nulo se inserta como NULL
+            // Si el texto es nulo se inserta como null
             if (mensaje.getTexto() != null && !mensaje.getTexto().isEmpty()) {
                 ps.setString(3, mensaje.getTexto());
                 verificacion = true;
@@ -64,7 +61,7 @@ public class MensajesDAO {
                 ps.setNull(3, Types.VARCHAR);
             }
 
-            // Si la imagen_url es nula se inserta como NULL
+            // Si la imagen es nula se inserta como null
             if (mensaje.getImagen_url() != null && !mensaje.getImagen_url().isEmpty()) {
                 ps.setString(4, mensaje.getImagen_url());
                 verificacion = true;
@@ -86,37 +83,5 @@ public class MensajesDAO {
             Conexion.cerrarStatement(ps);
             Conexion.cerrarConexion(connection);
         }
-    }
-
-    public List<Mensajes> obtenerTodosLosMensajes(int idGrupo) {
-        Connection connection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        List<Mensajes> listaMensajes = new ArrayList<>();
-        try {
-            connection = Conexion.getConexion();
-            ps = connection.prepareStatement(SELECT_ALL_MENSAJES);
-            ps.setInt(1, idGrupo);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Mensajes mensaje = new Mensajes(
-                        rs.getInt("id_mensajes"),
-                        rs.getString("fk_maestros"),
-                        rs.getInt("fk_grupos"),
-                        rs.getString("texto"),
-                        rs.getString("imagen_url"), // Obtener imagen_url como String
-                        rs.getTimestamp("fecha_envio")
-                );
-                listaMensajes.add(mensaje);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al obtener todos los mensajes: " + e.getMessage());
-        } finally {
-            Conexion.cerrarResultSet(rs);
-            Conexion.cerrarStatement(ps);
-            Conexion.cerrarConexion(connection);
-        }
-        return listaMensajes;
     }
 }

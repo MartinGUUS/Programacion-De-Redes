@@ -124,7 +124,6 @@
 
 
         </div>
-        <!-- Botón para redirigir a notificaciones -->
 
         <div class="info-section">
             <h2>Materias Inscritas</h2>
@@ -146,8 +145,7 @@
             </ul>
 
             <h2>Información</h2>
-            <p>Desde este menú puedes acceder a los chats de tus materias, revisar materiales y estar al tanto de las
-                notificaciones importantes.</p>
+            <p>Con esta aplicación podrás estar al corriente de los avisos que los maestros realicen en cada una de sus materias</p>
         </div>
     </div>
 

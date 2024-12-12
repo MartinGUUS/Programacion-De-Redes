@@ -3,7 +3,6 @@ package Servicios.impl;
 import Datos.*;
 import Modelo.*;
 import Servicios.LoginService;
-
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -62,7 +61,7 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // Retorna null si no encuentra al alumno
+        return null;
     }
 
     @Override
@@ -78,7 +77,7 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // Retorna null si no encuentra al maestro
+        return null;
     }
 
     @Override
@@ -100,7 +99,7 @@ public class LoginServiceImpl extends UnicastRemoteObject implements LoginServic
             while (rs.next()) {
                 Grupos_Alumnos grupoAlumno = new Grupos_Alumnos(
                         rs.getInt("id_grupos"),
-                        rs.getString("nombre") // Asignar nombreMateria
+                        rs.getString("nombre")
                 );
                 lista.add(grupoAlumno);
             }

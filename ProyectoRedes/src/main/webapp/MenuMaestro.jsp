@@ -154,8 +154,7 @@
             </h1>
         </div>
         <div class="info-section">
-            <h2>Gestión de Grupos</h2>
-            <p>Aquí puedes crear grupos para tus materias, gestionar alumnos y revisar la actividad en los chats.</p>
+            <h2>Gestiona tus grupos</h2>
             <ul>
                 <%
                     if (listaMaterias != null && !listaMaterias.isEmpty()) {
