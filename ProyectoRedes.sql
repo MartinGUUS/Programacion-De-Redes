@@ -63,17 +63,19 @@ CREATE TABLE mensajes (
 
 
 
-INSERT INTO maestros (n_control, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
-VALUES ('123', 'Carlos', 'Eduardo', 'Gómez', 'López', 'carlos.gomez@example.com', '123');
-INSERT INTO maestros (n_control, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
-VALUES ('asd', 'Miguel', 'Angel', 'Gómez', 'López', 'carlos.gomez@example.com', '123');
+-- Insertar datos en la tabla maestros
+INSERT INTO maestros (n_control, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena) VALUES
+('123', 'Carlos', 'Eduardo', 'Gómez', 'López', 'carlos.gomez@example.com', '123'),
+('asd', 'Miguel', 'Ángel', 'Ramírez', 'Martínez', 'miguel.ramirez@example.com', '123'),
+('123123', 'Martin', 'Gustavo', 'Acosta', 'Romero', 'martin.acosta@example.com', '123'),
+('asd123', 'Laura', 'María', 'Fernández', 'Sánchez', 'laura.fernandez@example.com', '123');
 
-INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
-VALUES ('zs2202', 'María', 'Isabel', 'Pérez', 'Hernández', 'maria.perez@example.com', '123');
-INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
-VALUES ('zs2203', 'Gustavo', 'Isabel', 'Pérez', 'Hernández', 'maria.perez@example.com', '123');
-INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
-VALUES ('zs2204', 'Martin', 'Isabel', 'Pérez', 'Hernández', 'maria.perez@example.com', '123');
-INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena)
-VALUES ('zs2205', 'Ricardo', 'Isabel', 'Pérez', 'Hernández', 'maria.perez@example.com', '123');
+-- Insertar datos en la tabla alumnos
+INSERT INTO alumnos (matricula, nombre, segundo_nombre, apellido_paterno, apellido_materno, correo, contrasena) VALUES
+('zs2202', 'María', 'Isabel', 'Pérez', 'Hernández', 'maria.perez@example.com', '123'),
+('zs2203', 'Gustavo', 'Alejandro', 'Pérez', 'Hernández', 'gustavo.perez@example.com', '123'),
+('zs2204', 'Martin', 'José', 'Pérez', 'Hernández', 'martin.perez@example.com', '123'),
+('zs2205', 'Ricardo', 'Luis', 'Pérez', 'Hernández', 'ricardo.perez@example.com', '123'),
+('zs2206', 'Ana', 'Lucía', 'Pérez', 'Hernández', 'ana.perez@example.com', '123'),
+('zs2207', 'Pedro', 'Antonio', 'Pérez', 'Hernández', 'pedro.perez@example.com', '123');
 
