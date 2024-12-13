@@ -1,1 +1,1 @@
-Hola para proyecto redes
+Hola para proyecto redes, primero ejecutar solo el SQL, correr el main del proyecto y el servidor tompcat para que funcione correctamente
