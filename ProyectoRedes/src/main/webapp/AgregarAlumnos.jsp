@@ -2,24 +2,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%
-    // Configurar las cabeceras de la respuesta para evitar caché
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
-    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-    response.setDateHeader("Expires", 0); // Proxies
+    // Configurar las cabeceras de la respuesta para evitar cache
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
 
-    // Validar sesión activa
     if (request.getSession(false) == null || request.getSession().getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
         return;
     }
 
-    // Obtener datos del maestro y la materia
     String materia = request.getParameter("materia");
     if (materia == null || materia.isEmpty()) {
         materia = "Sin nombre";
     }
 
-    // Obtener resultado de la búsqueda enviado desde el servlet
     Alumnos alumno = (Alumnos) request.getAttribute("resultadosBusqueda");
     String n_control = (String) request.getSession().getAttribute("usuario");
 

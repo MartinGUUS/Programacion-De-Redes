@@ -21,18 +21,17 @@
     <style>
         html, body {
             font-family: 'JetBrains Mono', sans-serif;
-            margin: 0; /* Opcional: quita los márgenes predeterminados */
+            margin: 0;
             padding: 0;
         }
 
     </style>
 
     <script>
-        // Limpia los campos del formulario después de enviarlo
         function limpiarCampos(form) {
             setTimeout(() => {
                 form.reset();
-            }, 50); // Limpia después de un breve retardo para garantizar que los datos se envían primero
+            }, 50);
         }
     </script>
 </head>

@@ -141,7 +141,6 @@
 </head>
 <body>
 <div class="main">
-    <!-- BARRA LATERAL -->
     <div class="lateral">
         <h1>Teams UV</h1>
         <a href="MenuMaestro.jsp">Inicio</a>
@@ -150,7 +149,6 @@
         <a href="CerrarSesionServlet">Cerrar sesión</a>
     </div>
 
-    <!-- CONTENIDO MAIN -->
     <div class="main-content">
         <div class="header">
             <h1>Crear un nuevo grupo</h1>

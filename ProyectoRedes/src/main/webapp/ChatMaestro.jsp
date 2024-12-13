@@ -7,19 +7,17 @@
 <%@ page import="Modelo.Maestros" %>
 <%
     // Configurar las cabeceras de la respuesta para evitar caché
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
-    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-    response.setDateHeader("Expires", 0); // Proxies
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
 
     if (request.getSession(false) == null || request.getSession().getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
         return;
     }
 
-    // Obtener la matrícula del usuario desde la sesión
     String n_control = (String) request.getSession().getAttribute("usuario");
 
-    // Obtener los parámetros de la materia y el id_grupos
     String materia = request.getParameter("materia");
     if (materia == null || materia.isEmpty()) {
         materia = "Sin nombre";
@@ -32,7 +30,7 @@
 
     String idgrupo = request.getParameter("id_grupos");
     if (idgrupo == null || idgrupo.isEmpty()) {
-        idgrupo = "0"; // Valor por defecto
+        idgrupo = "0";
     }
 
 %>
@@ -40,7 +38,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- (Mantener el resto del head igual) -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat de Materias</title>
@@ -83,7 +80,6 @@
             transform: scale(0.95);
         }
 
-        /* Estilo para las imágenes */
         .chat-image {
             max-width: 100px;
             cursor: pointer;
@@ -94,7 +90,6 @@
             transform: scale(1.2);
         }
 
-        /* Estilo para el modal */
         .modal {
             display: none;
             position: fixed;
@@ -225,14 +220,11 @@
 
                 <form class="chat-input" method="post" enctype="multipart/form-data" action="EnviarMensajeServlet">
                     <div class="input-row">
-                        <!-- Botón de enviar -->
                         <button type="submit" style="font-family: 'JetBrains Mono', sans-serif" class="agregarAlu">
                             Enviar
                         </button>
-                        <!-- Botón para adjuntar archivo -->
                         <label for="file-input" class="agregarAlu">Adjuntar</label>
                         <input id="file-input" type="file" name="imagen" accept="image/*" hidden>
-                        <!-- Área de texto para el mensaje -->
                         <textarea name="mensaje" placeholder="Escribe un mensaje..." rows="3"></textarea>
                     </div>
                     <input type="hidden" name="grupo" value="<%= idgrupo %>">
@@ -245,7 +237,6 @@
     </div>
 </div>
 
-<!-- Modal -->
 <div id="imageModal" class="modal" onclick="closeModal()">
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage" alt="Imagen ampliada">

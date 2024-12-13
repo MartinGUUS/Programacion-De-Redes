@@ -17,20 +17,17 @@
         }
 
 
-
     </style>
     <script>
-        // Limpia los campos del formulario después de enviarlo
         function limpiarCampos(form) {
             setTimeout(() => {
                 form.reset();
-            }, 50); // Limpia después de un breve retardo para garantizar que los datos se envían primero
+            }, 50);
         }
     </script>
 </head>
 <body>
 <%
-    // Configurar cabeceras para evitar caché
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache");
     response.setDateHeader("Expires", 0);
@@ -38,7 +35,6 @@
 <div class="login-container">
     <div class="login-card">
         <h2>Iniciar sesion</h2>
-        <!-- Actualizar el formulario para enviar al servlet -->
         <form action="LoginServlet" method="post" onsubmit="limpiarCampos(this);">
             <div class="form-group">
                 <label for="usuario">Matricula o numero de control</label>
@@ -51,7 +47,6 @@
             <button type="submit" class="login-button" style="font-family: JetBrains Mono">Iniciar sesion</button>
         </form>
         <p class="register-link">No tienes cuenta? <a href="Registro.jsp">Registrate aqui</a></p>
-        <%-- Mostrar mensaje de error si el servlet establece un atributo "mensaje" --%>
         <%
             String mensaje = (String) request.getAttribute("mensaje");
             if (mensaje != null) {

@@ -6,19 +6,17 @@
 <%@ page import="Modelo.Maestros" %>
 <%
     // Configurar las cabeceras de la respuesta para evitar caché
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
-    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-    response.setDateHeader("Expires", 0); // Proxies
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
 
     if (request.getSession(false) == null || request.getSession().getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
         return;
     }
 
-    // Obtener la matrícula del usuario desde la sesión
     String matricula = (String) request.getSession().getAttribute("usuario");
 
-    // Obtener los parámetros de la materia y el id_grupos
     String materia = request.getParameter("materia");
     if (materia == null || materia.isEmpty()) {
         materia = "Sin nombre";
@@ -29,7 +27,6 @@
         idgrupo = "0"; // Valor por defecto
     }
 
-    // Llamar al servicio RMI para obtener los grupos del alumno
     List<Grupos_Alumnos> listaMaterias = null;
     List<Mensajes> mensajes = null;
     Maestros maestro = null;
@@ -59,7 +56,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- (Mantener el resto del head igual) -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat de Materias</title>
@@ -180,48 +176,39 @@
     </script>
 
     <script>
-        // Inicializar el WebSocket
         var idGrupo = <%= idgrupo %>;
         var nombreMaestro = "<%= nombre %>";
         var ws = new WebSocket("ws://localhost:8080/ProyectoRedes/wsChat?idGrupo=" + idGrupo);
 
         ws.onmessage = function (event) {
             var mensaje = event.data;
-
-            // Parsear el JSON recibido
             var msgObj = JSON.parse(mensaje);
-
             var chatContainer = document.querySelector('.chat-messages');
-
-            // Crear un contenedor para el mensaje
             var messageElement = document.createElement('div');
-
-            // Crear el texto del mensaje
             var p = document.createElement('p');
-            p.innerHTML = "<strong>" + nombreMaestro + ":</strong> " + (msgObj.text ? msgObj.text : "Se ha enviado una imagen");
+
+            p.innerHTML = "<strong>" + nombreMaestro + ":</strong> " + (msgObj.text ? msgObj.text : "Imagen enviada");
             messageElement.appendChild(p);
 
-            // Si hay una imagen, agregarla
             if (msgObj.type === "image" && msgObj.imageData) {
                 var img = document.createElement('img');
                 img.className = "chat-image";
-                img.src = msgObj.imageData; // Ahora es la URL de la imagen
+                img.src = msgObj.imageData;
                 img.onclick = function () {
                     showModal(this.src);
                 };
                 messageElement.appendChild(img);
             }
 
-            // Agregar el mensaje en la parte superior
             chatContainer.prepend(messageElement);
         };
 
-        // Cerrar el WebSocket antes de cerrar la página
         window.addEventListener('beforeunload', function () {
             if (ws.readyState === WebSocket.OPEN) {
                 ws.close();
             }
         });
+
     </script>
 
 
@@ -275,7 +262,6 @@
                 <p>No hay mensajes en este grupo.</p>
                 <% } %>
             </div>
-            <!-- No se muestra el formulario de envío ya que el alumno sólo puede leer -->
             <div class="chat-input">
                 <textarea placeholder="Solo lectura: No puedes escribir mensajes." disabled></textarea>
             </div>
@@ -283,7 +269,6 @@
     </div>
 </div>
 
-<!-- Modal para mostrar imagen ampliada -->
 <div id="imageModal" class="modal" onclick="closeModal()">
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage" alt="Imagen ampliada">

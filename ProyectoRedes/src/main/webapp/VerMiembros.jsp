@@ -8,19 +8,17 @@
 
 <%
     // Configurar las cabeceras de la respuesta para evitar caché
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
-    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-    response.setDateHeader("Expires", 0); // Proxies
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
 
     if (request.getSession(false) == null || request.getSession().getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
         return;
     }
 
-    // Obtener la matrícula del usuario desde la sesión
     String n_control = (String) request.getSession().getAttribute("usuario");
 
-    // Llamar al servicio RMI para obtener las materias
     List<Grupos> listaMaterias = null;
     try {
         LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
@@ -29,10 +27,8 @@
         e.printStackTrace();
     }
 
-    // Obtener el id del grupo
     int id_grupo = Integer.parseInt(request.getParameter("id_grupos"));
 
-    // Obtener la lista de alumnos del grupo
     List<Alumnos> listaAlumnos = null;
     try {
         LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
@@ -66,7 +62,7 @@
     <style>
         html, body {
             font-family: 'JetBrains Mono', sans-serif;
-            margin: 0; /* Opcional: quita los márgenes predeterminados */
+            margin: 0;
             padding: 0;
         }
 
@@ -159,7 +155,6 @@
 </head>
 <body>
 <div class="main">
-    <!-- BARRA LATERAL -->
     <div class="lateral">
         <h1>Teams UV</h1>
         <a href="MenuMaestro.jsp">Inicio</a>
@@ -167,7 +162,6 @@
         <a href="CerrarSesionServlet">Cerrar sesión</a>
     </div>
 
-    <!-- CONTENIDO MAIN -->
     <div class="main-content">
         <div class="header">
             <h1>Consulta los miembros de la clase</h1>
@@ -198,7 +192,6 @@
                     <td><%= alumno.getCorreo() %>
                     </td>
                     <td>
-                        <!-- Botón para eliminar -->
                         <form action="EliminarAlumnoGrupoServlet" method="post">
                             <input type="hidden" name="matricula" value="<%= alumno.getMatricula() %>">
                             <input type="hidden" name="id_grupos" value="<%= id_grupo %>">

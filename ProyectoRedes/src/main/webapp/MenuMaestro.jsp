@@ -7,21 +7,19 @@
 
 <%
     // Configurar las cabeceras de la respuesta para evitar caché
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
-    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-    response.setDateHeader("Expires", 0); // Proxies
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
 
     if (request.getSession(false) == null || request.getSession().getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
         return;
     }
 
-    // Obtener la matrícula del usuario desde la sesión
     String n_control = (String) request.getSession().getAttribute("usuario");
     String nombreMaestro = (String) request.getSession().getAttribute("nombre");
 
 
-    // Llamar al servicio RMI para obtener las materias
     List<Grupos> listaMaterias = null;
     try {
         LoginService loginService = (LoginService) Naming.lookup("rmi://localhost:1099/ServicioLogin");
@@ -44,26 +42,25 @@
     <style>
         html, body {
             font-family: 'JetBrains Mono', sans-serif;
-            margin: 0; /* Opcional: quita los márgenes predeterminados */
+            margin: 0;
             padding: 0;
         }
 
     </style>
     <style>
 
-        /* Estilo específico para el primer elemento del submenú */
         .submenuPrincipal a:first-child {
             font-size: 16px;
             font-weight: bold;
             color: #ffffff; /* Color blanco */
-            background-color: rgba(89, 201, 98); /* Fondo verde para destacar */
+            background-color: rgba(89, 201, 98);
 
             text-align: center;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .submenuPrincipal a:first-child:hover {
-            background-color: rgb(46, 114, 52); /* Fondo más oscuro al hover */
+            background-color: rgb(46, 114, 52);
             transform: scale(1.05);
         }
 
@@ -71,12 +68,12 @@
         .lateral .submenuPrincipal .highlight-link {
             color: #ffffff; /* Color blanco */
             font-weight: bold;
-            background-color: rgba(89, 201, 98); /* Fondo verde para destacar */
+            background-color: rgba(89, 201, 98);
         }
 
         .lateral .submenuPrincipal .highlight-link:hover {
             color: #ffffff; /* Color blanco */
-            background-color: rgb(46, 114, 52); /* Fondo más oscuro al hover */
+            background-color: rgb(46, 114, 52);
         }
 
         .info-section {
@@ -115,7 +112,6 @@
 </head>
 <body>
 <div class="main">
-    <!-- BARRA LATERAL -->
     <div class="lateral">
         <h1>Teams UV</h1>
         <a href="MenuMaestro.jsp">Inicio</a>
@@ -147,7 +143,6 @@
         <a href="CerrarSesionServlet">Cerrar sesión</a>
     </div>
 
-    <!-- CONTENIDO MAIN -->
     <div class="main-content">
         <div class="header">
             <h1>Bienvenido maestro: <%= request.getSession().getAttribute("nombre") %>
